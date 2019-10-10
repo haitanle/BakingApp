@@ -39,15 +39,15 @@ public class Recipe {
      * @param context The application context.
      * @return The ArrayList of all recipe IDs.
      */
-    static ArrayList<Integer> getAllRecipeIDs(Context context){
+    public static ArrayList<Recipe> getAllRecipeIDs(Context context){
         JsonReader reader;
-        ArrayList<Integer> recipeIDs = new ArrayList<>();
+        ArrayList<Recipe> recipeIDs = new ArrayList<>();
 
         try {
             reader = readJSONFile(context);
             reader.beginArray();
             while (reader.hasNext()) {
-                recipeIDs.add(readEntry(reader).getId());
+                recipeIDs.add(readEntry(reader));
             }
             reader.endArray();
             reader.close();
@@ -124,7 +124,7 @@ public class Recipe {
      * @throws IOException
      */
     private static Ingredients readIngredientsEntry(JsonReader reader) throws IOException{
-        long quantity = -1;
+        double quantity = -1;
         String measure = null;
         String ingredient = null;
 
@@ -132,10 +132,10 @@ public class Recipe {
         while (reader.hasNext()){
             String name = reader.nextName();
             if (name.equals("quantity")) {
-                quantity = reader.nextLong();
+                quantity = reader.nextDouble();
             } else if (name.equals("measure")) {
                 measure = reader.nextString();
-            } else if (name.equals("ingredientsList")) {
+            } else if (name.equals("ingredient")) {
                 ingredient = reader.nextString();
             } else {
                 reader.skipValue();
@@ -207,21 +207,23 @@ public class Recipe {
         AssetManager assetManager = context.getAssets();
         String uri = null;
 
-        try {
-            for (String asset : assetManager.list("")) {
-                if (asset.endsWith(".baking.json")) {
-                    uri = "asset:///" + asset;
-                }
-            }
-        } catch (IOException e) {
-            Toast.makeText(context, R.string.recipe_list_load_error, Toast.LENGTH_LONG)
-                    .show();
-        }
-
+//        try {
+//            for (String asset : assetManager.list("")) {
+//                if (asset.endsWith("baking.json")) {
+//                    uri = "asset:///" + asset;
+//                }
+//            }
+//        } catch (IOException e) {
+//            Toast.makeText(context, R.string.recipe_list_load_error, Toast.LENGTH_LONG)
+//                    .show();
+//        }
+//
         String userAgent = Util.getUserAgent(context, "BakingApp");
         DataSource dataSource = new DefaultDataSource(context, null, userAgent, false);
-        DataSpec dataSpec = new DataSpec(Uri.parse(uri));
-        InputStream inputStream = new DataSourceInputStream(dataSource, dataSpec);
+//        DataSpec dataSpec = new DataSpec(Uri.parse(uri));
+//        InputStream inputStream = new DataSourceInputStream(dataSource, dataSpec);
+
+        InputStream inputStream = assetManager.open("baking.json");
 
         JsonReader reader = null;
         try {

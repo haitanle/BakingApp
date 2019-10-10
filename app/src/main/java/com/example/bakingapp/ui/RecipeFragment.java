@@ -11,6 +11,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.Recipe;
 
 public class RecipeFragment extends Fragment {
 
@@ -28,6 +29,10 @@ public class RecipeFragment extends Fragment {
 
         GridView gridView = (GridView) rootView.findViewById(R.id.recipe_grid_view);
 
+        RecipeListAdapter mAdapter = new RecipeListAdapter(getContext(), Recipe.getAllRecipeIDs(getContext()));
 
+        gridView.setAdapter(mAdapter);
+
+        return rootView;
     }
 }

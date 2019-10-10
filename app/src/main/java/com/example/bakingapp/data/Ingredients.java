@@ -2,17 +2,17 @@ package com.example.bakingapp.data;
 
 public class Ingredients {
 
-    private long quantity;
+    private double quantity;
     private String measure;
     private String ingredients;
 
-    public Ingredients(long quantity, String measure, String ingredients) {
+    public Ingredients(double quantity, String measure, String ingredients) {
         this.quantity = quantity;
         this.measure = measure;
         this.ingredients = ingredients;
     }
 
-    public long getQuantity() {
+    public double getQuantity() {
         return quantity;
     }
 

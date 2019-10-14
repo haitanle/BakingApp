@@ -2,6 +2,7 @@ package com.example.bakingapp.ui;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -19,14 +20,20 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
     }
 
     @Override
-    public void onImageSelected(int indexID) {
+    public void onImageSelected(int position) {
 
         RecipeDetailFragment ingredientsFragment = new RecipeDetailFragment();
 
         ingredientsFragment.setmRceipeIds(Recipe.getAllRecipeIDs(this));
 
-        Log.d(MainActivity.class.getSimpleName(), "id pressed "+indexID);
+        Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
 
-        ingredientsFragment.setmListIndex(indexID);
+        Log.d(MainActivity.class.getSimpleName(), "id pressed "+recipe.getId());
+
+        Intent recipeDetailIntent = new Intent(this, IngredientsActivity.class);
+
+        recipeDetailIntent.putExtra("position", position);
+
+        startActivity(recipeDetailIntent);
     }
 }

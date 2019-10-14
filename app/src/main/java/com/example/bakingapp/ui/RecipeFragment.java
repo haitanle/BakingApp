@@ -14,7 +14,10 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.Ingredients;
 import com.example.bakingapp.data.Recipe;
+
+import java.util.List;
 
 public class RecipeFragment extends Fragment {
 
@@ -57,10 +60,10 @@ public class RecipeFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Log.d(RecipeFragment.class.getSimpleName(), "position clicked "+position);
+//                Log.d(RecipeFragment.class.getSimpleName(), "position clicked "+position);
                 int indexID = view.getId();
-                Log.d(RecipeFragment.class.getSimpleName(), "id pressed "+indexID);
-                mCallback.onImageSelected(indexID);
+                //Log.d(RecipeFragment.class.getSimpleName(), "id pressed "+indexID);
+                mCallback.onImageSelected(position);
             }
         });
 

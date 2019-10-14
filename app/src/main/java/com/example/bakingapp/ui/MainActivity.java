@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         Log.d(MainActivity.class.getSimpleName(), "id pressed "+recipe.getId());
 
-        Intent recipeDetailIntent = new Intent(this, IngredientsActivity.class);
+        Intent recipeDetailIntent = new Intent(this, RecipeDetailsActivity.class);
 
         recipeDetailIntent.putExtra("position", position);
 

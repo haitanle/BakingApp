@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,18 +31,13 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        // inflate the fragment layout with inside the container
-        View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        // Get a reference to the TextView in the fragment layout
-        final TextView textView = (TextView) rootView.findViewById(R.id.ingredient_detail_textView);
+        GridView gridView = (GridView) rootView.findViewById(R.id.recipe_grid_view);
 
-        if (mRceipeIds != null){
+        RecipeListAdapter mAdapter = new RecipeListAdapter(getContext(), Recipe.getAllRecipeIDs(getContext()));
 
-            textView.setText(mRceipeIds.get(mListIndex).getName());
-        } else{
-            Log.v(TAG, "This fragment has a null list");
-        }
+        gridView.setAdapter(mAdapter);
 
         return rootView;
     }

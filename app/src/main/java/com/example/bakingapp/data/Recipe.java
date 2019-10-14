@@ -35,6 +35,28 @@ public class Recipe {
     }
 
     /**
+     * Gets a single recipe by its ID
+     */
+    static Recipe getRecipeByID(Context context, int recipeID){
+        JsonReader reader;
+        try {
+            reader = readJSONFile(context);
+            reader.beginArray();
+            while (reader.hasNext()){
+                Recipe currentRecipe = readEntry(reader);
+                if (currentRecipe.getId() == recipeID){
+                    reader.close();
+                    return currentRecipe;
+                }
+            }
+
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
      * Gets and ArrayList of the IDs for all of the Recipes from the JSON file.
      * @param context The application context.
      * @return The ArrayList of all recipe IDs.

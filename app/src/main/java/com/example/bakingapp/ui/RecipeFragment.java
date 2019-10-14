@@ -1,9 +1,12 @@
 package com.example.bakingapp.ui;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.GridView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +17,23 @@ import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
 
 public class RecipeFragment extends Fragment {
+
+    OnImageClickListener mCallback;
+
+    public interface OnImageClickListener{
+        void onImageSelected(int position);
+    }
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        try{
+            mCallback = (OnImageClickListener) context;
+        } catch (ClassCastException e){
+            throw new ClassCastException(context.toString() + "must implement OnImageClickListener");
+        }
+    }
 
     /**
      * Mandatory constructor for Fragment
@@ -33,6 +53,19 @@ public class RecipeFragment extends Fragment {
 
         gridView.setAdapter(mAdapter);
 
+        // Set click listener to trigger callback when an item is selected
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Log.d(RecipeFragment.class.getSimpleName(), "position clicked "+position);
+                int indexID = view.getId();
+                Log.d(RecipeFragment.class.getSimpleName(), "id pressed "+indexID);
+                mCallback.onImageSelected(indexID);
+            }
+        });
+
         return rootView;
     }
+
+
 }

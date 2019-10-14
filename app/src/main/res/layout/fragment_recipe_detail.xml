@@ -11,10 +11,17 @@
  limitations under the License.-->
 
 <!-- This fragment layout displays just one image of an Android-Me body part -->
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ingredient_detail_textView"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ingredients_grid_view"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="0dp"
+    android:adjustViewBounds="true"
+    android:gravity="center"
+    android:horizontalSpacing="8dp"
+    android:numColumns="1"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="8dp"
+    tools:text="Test">
 
-</TextView>
+</GridView>

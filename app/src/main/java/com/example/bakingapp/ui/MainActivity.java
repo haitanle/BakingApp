@@ -22,9 +22,9 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
     @Override
     public void onImageSelected(int position) {
 
-        RecipeDetailFragment ingredientsFragment = new RecipeDetailFragment();
+        RecipeFragment recipeFragment = new RecipeFragment();
 
-        ingredientsFragment.setmRceipeIds(Recipe.getAllRecipeIDs(this));
+        recipeFragment.setmRceipeIds(Recipe.getAllRecipeIDs(this));
 
         Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
 

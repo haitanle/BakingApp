@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -23,14 +24,17 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         int position = getIntent().getIntExtra("position",-1);
 
-        Log.d(RecipeDetailsActivity.class.getSimpleName(), "position "+String.valueOf(position));
+        Log.d(RecipeDetailsActivity.class.getSimpleName(), "position here "+String.valueOf(position));
 
         Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
 
         List<Ingredients> ingredientsList = recipe.getIngredientsList();
 
-        for (Ingredients ingredients: ingredientsList){
+//        for (Ingredients ingredients: ingredientsList){
+//
+//        }
 
-        }
+        Intent intent = new Intent(this, StepsActivity.class);
+        startActivity(intent);
     }
 }

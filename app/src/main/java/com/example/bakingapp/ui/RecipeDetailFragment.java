@@ -1,12 +1,10 @@
 package com.example.bakingapp.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -31,13 +29,15 @@ public class RecipeDetailFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
+        final View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
 
-        GridView gridView = (GridView) rootView.findViewById(R.id.recipe_grid_view);
+        GridView gridView = (GridView) rootView.findViewById(R.id.ingredients_grid_view);
 
-        RecipeListAdapter mAdapter = new RecipeListAdapter(getContext(), Recipe.getAllRecipeIDs(getContext()));
+        //RecipeDetailFragment mAdapter = new RecipeDetailFragment(getContext(), Recipe.getAllRecipeIDs(getContext()));
 
-        gridView.setAdapter(mAdapter);
+        //gridView.setAdapter(mAdapter);
+
+        //todo: finish recipeDetailFragment display
 
         return rootView;
     }

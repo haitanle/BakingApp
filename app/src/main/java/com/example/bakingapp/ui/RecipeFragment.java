@@ -21,6 +21,9 @@ import java.util.List;
 
 public class RecipeFragment extends Fragment {
 
+    private List<Recipe> mRceipeIds;
+    private int mListIndex;
+
     OnImageClickListener mCallback;
 
     public interface OnImageClickListener{
@@ -70,5 +73,19 @@ public class RecipeFragment extends Fragment {
         return rootView;
     }
 
+    public List<Recipe> getmRceipeIds() {
+        return mRceipeIds;
+    }
 
+    public void setmRceipeIds(List<Recipe> mRceipeIds) {
+        this.mRceipeIds = mRceipeIds;
+    }
+
+    public int getmListIndex() {
+        return mListIndex;
+    }
+
+    public void setmListIndex(int mListIndex) {
+        this.mListIndex = mListIndex;
+    }
 }

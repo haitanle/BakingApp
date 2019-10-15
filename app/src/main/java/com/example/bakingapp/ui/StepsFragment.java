@@ -13,13 +13,13 @@ import androidx.fragment.app.Fragment;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
 
-public class RecipeDetailFragment extends Fragment {
+public class StepsFragment extends Fragment {
 
-    private static final String TAG = RecipeDetailFragment.class.getSimpleName();
+    private static final String TAG = StepsFragment.class.getSimpleName();
 
     private Recipe recipe;
 
-    public RecipeDetailFragment(){
+    public StepsFragment(){
     }
 
     @Nullable
@@ -27,10 +27,9 @@ public class RecipeDetailFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
-
         GridView gridView = (GridView) rootView.findViewById(R.id.ingredients_grid_view);
 
-        RecipeDetailAdapter adapter = new RecipeDetailAdapter(getContext(), getRecipe());
+        StepsAdapter adapter = new StepsAdapter(getContext(), getRecipe());
 
         gridView.setAdapter(adapter);
 

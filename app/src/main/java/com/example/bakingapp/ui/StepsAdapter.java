@@ -6,24 +6,24 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.example.bakingapp.data.Ingredients;
 import com.example.bakingapp.data.Recipe;
+import com.example.bakingapp.data.Steps;
 
 // Custom adapter class that displays a list of Recipe in a GridView
-public class RecipeDetailAdapter extends BaseAdapter {
+public class StepsAdapter extends BaseAdapter {
 
     // Keep track of the context and list of images to display
     private Context mContext;
     private Recipe recipe;
 
-    public RecipeDetailAdapter(Context mContext, Recipe recipe) {
+    public StepsAdapter(Context mContext, Recipe recipe) {
         this.mContext = mContext;
         this.recipe = recipe;
     }
 
     @Override
     public int getCount() {
-        return recipe.getIngredientsList().size();
+        return recipe.getStepsList().size();
     }
 
     @Override
@@ -48,13 +48,11 @@ public class RecipeDetailAdapter extends BaseAdapter {
             textView = (TextView) convertView;
         }
 
-        Ingredients ingredient = recipe.getIngredientsList().get(position);
-        String quantity = String.valueOf(ingredient.getQuantity());
-        String measure = ingredient.getMeasure();
-        String material = ingredient.getIngredients();
+        Steps steps = recipe.getStepsList().get(position);
+        String shortDescription = String.valueOf(steps.getShortDescription());
 
         // set the recipe name to the textview
-        textView.setText(quantity+" "+measure+" "+material);
+        textView.setText(shortDescription);
 
         return textView;
     }

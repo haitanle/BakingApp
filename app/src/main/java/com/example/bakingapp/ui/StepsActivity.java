@@ -1,10 +1,11 @@
 package com.example.bakingapp.ui;
 
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
@@ -32,8 +33,11 @@ public class StepsActivity extends AppCompatActivity {
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private TextView mDescriptionView;
+    private Button mButtonNext;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
+
+    private int currentStepID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,17 +49,35 @@ public class StepsActivity extends AppCompatActivity {
         int recipeID = getIntent().getIntExtra("recipeID",-1);
         int stepID = getIntent().getIntExtra("stepID",-1);
 
-        Recipe recipe = Recipe.getRecipeByID(this,recipeID);
-        String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
-        String description = recipe.getStepsList().get(stepID).getDescription();
+        final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
+
+        currentStepID = stepID;
+
+        String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
+        String description = recipe.getStepsList().get(currentStepID).getDescription();
 
         mDescriptionView = (TextView) findViewById(R.id.description_textView);
         mDescriptionView.setText(description);
 
-
         initializeMediaSession();
 
         initializePlayer(Uri.parse(stepURL));
+
+        mButtonNext = (Button) findViewById(R.id.buttonNext);
+        mButtonNext.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                currentStepID++;
+                mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+
+                MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                        view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+                mExoPlayer.prepare(mediaSource);
+                mExoPlayer.setPlayWhenReady(true);
+            }
+        });
     }
 
 

@@ -1,17 +1,13 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bakingapp.data.Ingredients;
 import com.example.bakingapp.data.Recipe;
-
-import java.util.List;
 
 // Custom adapter class that displays a list of Recipe in a GridView
 public class RecipeDetailAdapter extends BaseAdapter {
@@ -24,7 +20,6 @@ public class RecipeDetailAdapter extends BaseAdapter {
         this.mContext = mContext;
         this.recipe = recipe;
     }
-
 
     @Override
     public int getCount() {
@@ -53,8 +48,13 @@ public class RecipeDetailAdapter extends BaseAdapter {
             textView = (TextView) convertView;
         }
 
+        Ingredients ingredient = recipe.getIngredientsList().get(position);
+        String quantity = String.valueOf(ingredient.getQuantity());
+        String measure = ingredient.getMeasure();
+        String material = ingredient.getIngredients();
+
         // set the recipe name to the textview
-        textView.setText(recipe.getIngredientsList().get(position).getIngredients());
+        textView.setText(quantity+" "+measure+" "+material);
 
         return textView;
     }

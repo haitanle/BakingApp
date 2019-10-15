@@ -13,14 +13,11 @@ import androidx.fragment.app.Fragment;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
 
-import java.util.List;
-
 public class RecipeDetailFragment extends Fragment {
 
     private static final String TAG = RecipeDetailFragment.class.getSimpleName();
 
-    private List<Recipe> mRceipeIds;
-    private int mListIndex;
+    private Recipe recipe;
 
     public RecipeDetailFragment(){
     }
@@ -33,28 +30,18 @@ public class RecipeDetailFragment extends Fragment {
 
         GridView gridView = (GridView) rootView.findViewById(R.id.ingredients_grid_view);
 
-        //RecipeDetailFragment mAdapter = new RecipeDetailFragment(getContext(), Recipe.getAllRecipeIDs(getContext()));
+        RecipeDetailAdapter adapter = new RecipeDetailAdapter(getContext(), getRecipe());
 
-        //gridView.setAdapter(mAdapter);
-
-        //todo: finish recipeDetailFragment display
+        gridView.setAdapter(adapter);
 
         return rootView;
     }
 
-    public List<Recipe> getmRceipeIds() {
-        return mRceipeIds;
+    public Recipe getRecipe() {
+        return recipe;
     }
 
-    public void setmRceipeIds(List<Recipe> mRceipeIds) {
-        this.mRceipeIds = mRceipeIds;
-    }
-
-    public int getmListIndex() {
-        return mListIndex;
-    }
-
-    public void setmListIndex(int mListIndex) {
-        this.mListIndex = mListIndex;
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 }

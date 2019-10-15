@@ -6,6 +6,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Ingredients;
@@ -28,13 +29,16 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
 
-        List<Ingredients> ingredientsList = recipe.getIngredientsList();
+        Log.d(RecipeDetailsActivity.class.getSimpleName(), "recipe ingredients "+ recipe.getIngredientsList().get(1).getIngredients());
 
-//        for (Ingredients ingredients: ingredientsList){
-//
-//        }
+        ingredientFragment.setRecipe(recipe);
 
-        Intent intent = new Intent(this, StepsActivity.class);
-        startActivity(intent);
+        FragmentManager fragmentManager = getSupportFragmentManager();
+
+        fragmentManager.beginTransaction().add(R.id.ingredients_container, ingredientFragment).commit();
+
+
+        //Intent intent = new Intent(this, StepsActivity.class);
+        //startActivity(intent);
     }
 }

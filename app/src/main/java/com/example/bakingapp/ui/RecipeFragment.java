@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.data.Ingredients;
 import com.example.bakingapp.data.Recipe;
 
 import java.util.List;

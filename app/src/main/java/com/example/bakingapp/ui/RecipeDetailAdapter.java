@@ -1,9 +1,11 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.bakingapp.data.Ingredients;
@@ -16,17 +18,17 @@ public class RecipeDetailAdapter extends BaseAdapter {
 
     // Keep track of the context and list of images to display
     private Context mContext;
-    private List<Recipe> mRecipeIds;
+    private Recipe recipe;
 
-    public RecipeDetailAdapter(Context mContext, List<Recipe> mRecipeIds) {
+    public RecipeDetailAdapter(Context mContext, Recipe recipe) {
         this.mContext = mContext;
-        this.mRecipeIds = mRecipeIds;
+        this.recipe = recipe;
     }
 
 
     @Override
     public int getCount() {
-        return mRecipeIds.size();
+        return recipe.getIngredientsList().size();
     }
 
     @Override
@@ -40,21 +42,20 @@ public class RecipeDetailAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View view, ViewGroup viewGroup) {
+    public View getView(int position, View convertView, ViewGroup viewGroup) {
 
         TextView textView;
-        if(view == null){
+        if(convertView == null){
             // If the view is not recycled, this creates a new TextView
             textView = new TextView(mContext);
+            textView.setPadding(8, 8, 8, 8);
         } else{
-            textView = (TextView) view;
+            textView = (TextView) convertView;
         }
 
         // set the recipe name to the textview
-        List<Ingredients> ingredientsList = mRecipeIds.get(position).getIngredientsList();
+        textView.setText(recipe.getIngredientsList().get(position).getIngredients());
 
-
-        textView.setText(mRecipeIds.get(position).getName());
         return textView;
     }
 }

@@ -5,6 +5,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,7 @@ public class StepsActivity extends AppCompatActivity {
 
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
+    private TextView mDescriptionView;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
@@ -45,6 +47,12 @@ public class StepsActivity extends AppCompatActivity {
 
         Recipe recipe = Recipe.getRecipeByID(this,recipeID);
         String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
+        String description = recipe.getStepsList().get(stepID).getDescription();
+
+        mDescriptionView = (TextView) findViewById(R.id.description_textView);
+        mDescriptionView.setText(description);
+
+
         initializeMediaSession();
 
         initializePlayer(Uri.parse(stepURL));

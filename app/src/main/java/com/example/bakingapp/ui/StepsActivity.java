@@ -68,6 +68,9 @@ public class StepsActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 currentStepID++;
+                if (recipe.getStepsList().size() <= currentStepID){
+                    currentStepID = 0;
+                }
                 mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
 
                 Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());

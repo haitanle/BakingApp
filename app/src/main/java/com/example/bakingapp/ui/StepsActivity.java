@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
@@ -9,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.Recipe;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -38,9 +40,14 @@ public class StepsActivity extends AppCompatActivity {
 
         mPlayerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
 
+        int recipeID = getIntent().getIntExtra("recipeID",-1);
+        int stepID = getIntent().getIntExtra("stepID",-1);
+
+        Recipe recipe = Recipe.getRecipeByID(this,recipeID);
+        String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
         initializeMediaSession();
 
-        initializePlayer(Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdae8_-intro-cheesecake/-intro-cheesecake.mp4"));
+        initializePlayer(Uri.parse(stepURL));
     }
 
 

@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -10,6 +11,9 @@ import androidx.fragment.app.FragmentManager;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
+import com.example.bakingapp.data.Steps;
+
+import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnStepSelected {
 
@@ -36,14 +40,16 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
         stepsFragment.setRecipe(recipe);
         fragmentManager.beginTransaction().add(R.id.steps_description_container, stepsFragment).commit();
 
-
-        //Intent intent = new Intent(this, StepsActivity.class);
-        //startActivity(intent);
     }
 
     @Override
-    public void onStepsClicked(int position) {
+    public void onStepsClicked(int recipeID, int stepID) {
 
-        Toast.makeText(this, "On Step clicked with position "+position, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "On Step clicked with position "+ste.getShortDescription(), Toast.LENGTH_LONG).show();
+
+        Intent intent = new Intent(this, StepsActivity.class);
+        intent.putExtra("recipeID",recipeID);
+        intent.putExtra("stepID", stepID);
+        startActivity(intent);
     }
 }

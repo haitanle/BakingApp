@@ -14,6 +14,9 @@ import androidx.fragment.app.Fragment;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
+import com.example.bakingapp.data.Steps;
+
+import java.util.List;
 
 public class StepsFragment extends Fragment {
 
@@ -26,7 +29,7 @@ public class StepsFragment extends Fragment {
     }
 
     public interface OnStepSelected {
-        public void onStepsClicked(int position);
+        public void onStepsClicked(int recipeID, int stepID);
     }
 
     @Override
@@ -53,7 +56,8 @@ public class StepsFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                mCallback.onStepsClicked(position);
+                List<Steps> stepsList = recipe.getStepsList();
+                mCallback.onStepsClicked(recipe.getId(), stepsList.get(position).getId());
             }
         });
 

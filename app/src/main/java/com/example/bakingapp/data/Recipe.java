@@ -37,7 +37,7 @@ public class Recipe {
     /**
      * Gets a single recipe by its ID
      */
-    static Recipe getRecipeByID(Context context, int recipeID){
+    public static Recipe getRecipeByID(Context context, int recipeID){
         JsonReader reader;
         try {
             reader = readJSONFile(context);

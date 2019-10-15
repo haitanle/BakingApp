@@ -2,6 +2,7 @@ package com.example.bakingapp.ui;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,7 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
 
-public class RecipeDetailsActivity extends AppCompatActivity {
+public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnStepSelected {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,5 +39,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         //Intent intent = new Intent(this, StepsActivity.class);
         //startActivity(intent);
+    }
+
+    @Override
+    public void onStepsClicked(int position) {
+
+        Toast.makeText(this, "On Step clicked with position "+position, Toast.LENGTH_LONG).show();
     }
 }

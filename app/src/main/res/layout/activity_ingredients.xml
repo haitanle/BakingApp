@@ -15,23 +15,26 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fillViewport="true"
     tools:context="com.example.bakingapp.ui.RecipeDetailsActivity">
 
     <LinearLayout
         android:id="@+id/ingredients_linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:background="@android:color/white"
         android:orientation="vertical">
 
         <FrameLayout android:id="@+id/ingredients_container"
             android:layout_width="match_parent"
-            android:layout_height="380dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:scaleType="centerInside"/>
 
         <FrameLayout android:id="@+id/steps_description_container"
             android:layout_width="match_parent"
-            android:layout_height="380dp"
+            android:layout_height="0dp"
+            android:layout_weight="1"
             android:scaleType="centerInside"/>
 
 

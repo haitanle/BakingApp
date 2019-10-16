@@ -34,6 +34,7 @@ public class StepsActivity extends AppCompatActivity {
     private SimpleExoPlayerView mPlayerView;
     private TextView mDescriptionView;
     private Button mButtonNext;
+    private Button mButtonPrevious;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
@@ -70,6 +71,25 @@ public class StepsActivity extends AppCompatActivity {
                 currentStepID++;
                 if (recipe.getStepsList().size() <= currentStepID){
                     currentStepID = 0;
+                }
+                mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+
+                MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                        view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+                mExoPlayer.prepare(mediaSource);
+                mExoPlayer.setPlayWhenReady(true);
+            }
+        });
+
+        mButtonPrevious = (Button) findViewById(R.id.buttonPrevious);
+        mButtonPrevious.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                currentStepID--;
+                if (currentStepID == -1){
+                    currentStepID = recipe.getStepsList().size()-1;
                 }
                 mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
 

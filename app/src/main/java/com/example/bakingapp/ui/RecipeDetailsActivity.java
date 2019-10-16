@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
@@ -18,11 +20,13 @@ import com.example.bakingapp.data.Steps;
 import java.util.List;
 
 public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnStepSelected {
+//public class RecipeDetailsActivity extends AppCompatActivity implements StepsRecyclerAdapter.OnStepSelectedListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ingredients);
+       setContentView(R.layout.activity_ingredients);
+//        setContentView(R.layout.activity_steps_recycler_view);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -43,6 +47,8 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
         StepsFragment stepsFragment = new StepsFragment();
         stepsFragment.setRecipe(recipe);
         fragmentManager.beginTransaction().add(R.id.steps_description_container, stepsFragment).commit();
+
+
 
     }
 
@@ -67,4 +73,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
         }
         return onOptionsItemSelected(item);
     }
+
+//    @Override
+//    public void onStepClick() {
+//        Toast.makeText(this, "On Step clicked" , Toast.LENGTH_LONG).show();
+//    }
 }

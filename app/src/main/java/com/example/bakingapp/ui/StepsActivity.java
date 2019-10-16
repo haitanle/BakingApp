@@ -164,6 +164,20 @@ public class StepsActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * Release ExoPlayer.
+     */
+    private void releasePlayer() {
+        mExoPlayer.stop();
+        mExoPlayer.release();
+        mExoPlayer = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
+    }
 
     /**
      * Media Session Callbacks, where all external clients control the player.

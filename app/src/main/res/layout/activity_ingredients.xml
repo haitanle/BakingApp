@@ -31,6 +31,11 @@
             android:layout_weight="1"
             android:scaleType="centerInside"/>
 
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorPrimaryDark"/>
+
         <FrameLayout android:id="@+id/steps_description_container"
             android:layout_width="match_parent"
             android:layout_height="0dp"

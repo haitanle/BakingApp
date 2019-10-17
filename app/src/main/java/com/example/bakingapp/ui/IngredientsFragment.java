@@ -5,10 +5,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
@@ -26,13 +29,15 @@ public class IngredientsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
+        final View rootView = inflater.inflate(R.layout.activity_steps_recycler_view, container, false);
 
-        GridView gridView = (GridView) rootView.findViewById(R.id.ingredients_grid_view);
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.steps_rv);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         IngredientsAdapter adapter = new IngredientsAdapter(getContext(), getRecipe());
-
-        gridView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
         return rootView;
     }

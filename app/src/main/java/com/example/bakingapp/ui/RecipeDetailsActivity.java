@@ -40,10 +40,9 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
 
         ingredientFragment.setRecipe(recipe);
 
+
         FragmentManager fragmentManager = getSupportFragmentManager();
-
         fragmentManager.beginTransaction().add(R.id.ingredients_container, ingredientFragment).commit();
-
         StepsFragment stepsFragment = new StepsFragment();
         stepsFragment.setRecipe(recipe);
         fragmentManager.beginTransaction().add(R.id.steps_description_container, stepsFragment).commit();

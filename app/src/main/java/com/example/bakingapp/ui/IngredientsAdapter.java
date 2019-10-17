@@ -33,12 +33,8 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         IngredientsViewHolder viewHolder;
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-
         View view = inflater.inflate(R.layout.recycler_view_text_view, parent, false);
-
         viewHolder = new IngredientsViewHolder(view);
-
-        //viewHolder.textViewList.setText("test");
 
         return viewHolder;
     }
@@ -54,45 +50,6 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         return recipe.getIngredientsList().size();
     }
 
-    //    @Override
-//    public int getCount() {
-//        return recipe.getIngredientsList().size();
-//    }
-//
-//    @Override
-//    public Object getItem(int i) {
-//        return null;
-//    }
-
-//    @Override
-//    public long getItemId(int i) {
-//        return 0;
-//    }
-
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup viewGroup) {
-//
-//        TextView textView;
-//        if(convertView == null){
-//            // If the view is not recycled, this creates a new TextView
-//            textView = new TextView(mContext);
-//            textView.setPadding(8, 8, 8, 8);
-//        } else{
-//            textView = (TextView) convertView;
-//        }
-//
-//        Ingredients ingredient = recipe.getIngredientsList().get(position);
-//        String quantity = String.valueOf(ingredient.getQuantity());
-//        String measure = ingredient.getMeasure();
-//        String material = ingredient.getIngredients();
-//
-//        // set the recipe name to the textview
-//        textView.setText(quantity+" "+measure+" "+material);
-//
-//        return textView;
-//    }
-
-
 
     public class IngredientsViewHolder extends RecyclerView.ViewHolder{
 
@@ -100,15 +57,17 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
         public IngredientsViewHolder(@NonNull View itemView) {
             super(itemView);
-
             textViewList = (TextView) itemView.findViewById(R.id.text_view_list);
         }
 
         public void bind(int position){
-            Log.d(IngredientsAdapter.class.getSimpleName(), "bind position "+position);
-            textViewList.setText(recipe.getIngredientsList().get(position).getIngredients());
+
+            Ingredients ingredient = recipe.getIngredientsList().get(position);
+            String quantity = String.valueOf(ingredient.getQuantity());
+            String measure = ingredient.getMeasure();
+            String material = ingredient.getIngredients();
+
+            textViewList.setText(quantity+" "+measure+" "+material);
         }
-
-
     }
 }

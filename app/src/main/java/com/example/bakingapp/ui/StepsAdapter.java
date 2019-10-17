@@ -1,6 +1,7 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +20,17 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
     private Context mContext;
     private Recipe recipe;
 
+
     public StepsAdapter(Context mContext, Recipe recipe) {
         this.mContext = mContext;
         this.recipe = recipe;
+    }
+
+    /**
+     * The interface that receives onClick messages.
+     */
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
     }
 
     @NonNull
@@ -38,8 +47,17 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
     }
 
     @Override
-    public void onBindViewHolder(@NonNull StepsPlaceHolder holder, int position) {
+    public void onBindViewHolder(@NonNull StepsPlaceHolder holder, final int position) {
         holder.bind(position);
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(StepsAdapter.class.getSimpleName(), "position bind " + recipe.getStepsList().get(position).getShortDescription());
+
+
+            }
+        });
 
     }
 
@@ -48,7 +66,29 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
         return recipe.getStepsList().size();
     }
 
-    public class StepsPlaceHolder extends RecyclerView.ViewHolder{
+
+//    @Override
+//    public View getView(int position, View convertView, ViewGroup viewGroup) {
+//
+//        TextView textView;
+//        if(convertView == null){
+//            // If the view is not recycled, this creates a new TextView
+//            textView = new TextView(mContext);
+//            textView.setPadding(8, 8, 8, 8);
+//        } else{
+//            textView = (TextView) convertView;
+//        }
+//
+//        Steps steps = recipe.getStepsList().get(position);
+//        String shortDescription = String.valueOf(steps.getShortDescription());
+//
+//        // set the recipe name to the textview
+//        textView.setText(shortDescription);
+//
+//        return textView;
+//    }
+
+    public class StepsPlaceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView stepsTextView;
 
@@ -60,6 +100,16 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
 
         public void bind(int position){
             stepsTextView.setText(recipe.getStepsList().get(position).getShortDescription());
+        }
+
+        /**
+         * Called whenever a user clicks on an item in the list.
+         * @param v The View that was clicked
+         */
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            Log.d(IngredientsAdapter.class.getSimpleName(), "Adapter position clicked "+clickedPosition);
         }
     }
 }

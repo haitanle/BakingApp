@@ -27,6 +27,13 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
         this.recipe = recipe;
     }
 
+    /**
+     * The interface that receives onClick messages.
+     */
+    public interface ListItemClickListener {
+        void onListItemClick(int clickedItemIndex);
+    }
+
     @NonNull
     @Override
     public IngredientsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -51,7 +58,7 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
     }
 
 
-    public class IngredientsViewHolder extends RecyclerView.ViewHolder{
+    public class IngredientsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView textViewList;
 
@@ -68,6 +75,16 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
             String material = ingredient.getIngredients();
 
             textViewList.setText(quantity+" "+measure+" "+material);
+        }
+
+        /**
+         * Called whenever a user clicks on an item in the list.
+         * @param v The View that was clicked
+         */
+        @Override
+        public void onClick(View v) {
+            int clickedPosition = getAdapterPosition();
+            Log.d(IngredientsAdapter.class.getSimpleName(), "Adapter position clicked "+clickedPosition);
         }
     }
 }

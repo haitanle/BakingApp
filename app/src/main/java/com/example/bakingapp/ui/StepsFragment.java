@@ -2,11 +2,10 @@ package com.example.bakingapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -16,9 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
-import com.example.bakingapp.data.Steps;
-
-import java.util.List;
 
 public class StepsFragment extends Fragment {
 
@@ -59,13 +55,16 @@ public class StepsFragment extends Fragment {
         StepsAdapter adapter = new StepsAdapter(getContext(), getRecipe());
         recyclerView.setAdapter(adapter);
 
-//        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                List<Steps> stepsList = recipe.getStepsList();
-//                mCallback.onStepsClicked(recipe.getId(), stepsList.get(position).getId());
-//            }
-//        });
+
+        recyclerView.setOnClickListener(new RecyclerView.OnClickListener(){
+
+
+            @Override
+            public void onClick(View view) {
+
+            }
+
+        });
 
         return rootView;
     }
@@ -77,4 +76,11 @@ public class StepsFragment extends Fragment {
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
     }
+
+//    @Override
+//    public void onListItemClick(int clickedItemIndex) {
+//
+//        Log.d(StepsFragment.class.getSimpleName(), "Steps clicked Fragment "+String.valueOf(clickedItemIndex));
+//    }
+
 }

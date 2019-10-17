@@ -18,7 +18,7 @@ public class StepsRecyclerAdapter extends RecyclerView.Adapter<StepsRecyclerAdap
     OnStepSelectedListener mClickListener;
 
     public interface OnStepSelectedListener{
-        public void onStepClick();
+        void onStepClick(int position);
     }
 
     public StepsRecyclerAdapter(int count) {
@@ -70,9 +70,9 @@ public class StepsRecyclerAdapter extends RecyclerView.Adapter<StepsRecyclerAdap
        }
 
         @Override
-        public void onStepClick() {
-            int position  = getAdapterPosition();
-            mClickListener.onStepClick();
+        public void onStepClick(int position) {
+            //int position  = getAdapterPosition();
+            mClickListener.onStepClick(position);
         }
     }
 }

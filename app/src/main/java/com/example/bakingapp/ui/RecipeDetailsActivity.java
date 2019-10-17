@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,7 +14,7 @@ import androidx.fragment.app.FragmentManager;
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
 
-public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnStepSelected {
+public class RecipeDetailsActivity extends AppCompatActivity implements StepsFragment.OnStepSelected, StepsAdapter.ListItemClickListener {
 //public class RecipeDetailsActivity extends AppCompatActivity implements StepsRecyclerAdapter.OnStepSelectedListener {
 
     @Override
@@ -65,4 +66,19 @@ public class RecipeDetailsActivity extends AppCompatActivity implements StepsFra
 //    public void onStepClick() {
 //        Toast.makeText(this, "On Step clicked" , Toast.LENGTH_LONG).show();
 //    }
+
+    @Override
+    public void onListItemClick(int clickedItemIndex) {
+
+        // COMPLETED (12) Show a Toast when an item is clicked, displaying that item number that was clicked
+        /*
+         * Create a Toast and store it in our Toast field.
+         * The Toast that shows up will have a message similar to the following:
+         *
+         *                     Item #42 clicked.
+         */
+        String toastMessage = "Item #" + clickedItemIndex + " clicked.";
+        Toast.makeText(this, toastMessage, Toast.LENGTH_LONG).show();
+
+    }
 }

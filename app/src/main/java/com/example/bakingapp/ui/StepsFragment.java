@@ -11,6 +11,8 @@ import android.widget.GridView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
@@ -47,19 +49,23 @@ public class StepsFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        final View rootView = inflater.inflate(R.layout.fragment_recipe_detail, container, false);
-        GridView gridView = (GridView) rootView.findViewById(R.id.ingredients_grid_view);
+        final View rootView = inflater.inflate(R.layout.activity_steps_recycler_view, container, false);
+
+        RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.steps_rv);
+
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
 
         StepsAdapter adapter = new StepsAdapter(getContext(), getRecipe());
-        gridView.setAdapter(adapter);
+        recyclerView.setAdapter(adapter);
 
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                List<Steps> stepsList = recipe.getStepsList();
-                mCallback.onStepsClicked(recipe.getId(), stepsList.get(position).getId());
-            }
-        });
+//        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                List<Steps> stepsList = recipe.getStepsList();
+//                mCallback.onStepsClicked(recipe.getId(), stepsList.get(position).getId());
+//            }
+//        });
 
         return rootView;
     }

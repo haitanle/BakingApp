@@ -1,16 +1,19 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
-import com.example.bakingapp.data.Steps;
 
 // Custom adapter class that displays a list of Recipe in a GridView
-public class StepsAdapter extends BaseAdapter {
+public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHolder> {
 
     // Keep track of the context and list of images to display
     private Context mContext;
@@ -21,39 +24,42 @@ public class StepsAdapter extends BaseAdapter {
         this.recipe = recipe;
     }
 
+    @NonNull
     @Override
-    public int getCount() {
+    public StepsPlaceHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        StepsPlaceHolder placeHolder;
+
+        LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+        View view = layoutInflater.inflate(R.layout.recycler_view_text_view, parent, false);
+
+        placeHolder = new StepsPlaceHolder(view);
+
+        return placeHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull StepsPlaceHolder holder, int position) {
+        holder.bind(position);
+
+    }
+
+    @Override
+    public int getItemCount() {
         return recipe.getStepsList().size();
     }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
+    public class StepsPlaceHolder extends RecyclerView.ViewHolder{
 
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
+        TextView stepsTextView;
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup viewGroup) {
+        public StepsPlaceHolder(@NonNull View itemView) {
+            super(itemView);
 
-        TextView textView;
-        if(convertView == null){
-            // If the view is not recycled, this creates a new TextView
-            textView = new TextView(mContext);
-            textView.setPadding(8, 8, 8, 8);
-        } else{
-            textView = (TextView) convertView;
+            stepsTextView = (TextView) itemView.findViewById(R.id.text_view_list);
         }
 
-        Steps steps = recipe.getStepsList().get(position);
-        String shortDescription = String.valueOf(steps.getShortDescription());
-
-        // set the recipe name to the textview
-        textView.setText(shortDescription);
-
-        return textView;
+        public void bind(int position){
+            stepsTextView.setText(recipe.getStepsList().get(position).getShortDescription());
+        }
     }
 }

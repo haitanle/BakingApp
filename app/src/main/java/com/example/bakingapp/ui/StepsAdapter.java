@@ -1,6 +1,7 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,17 +21,20 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
     private Context mContext;
     private Recipe recipe;
 
+    final private StepItemClickListener mOnClickListener;
 
-    public StepsAdapter(Context mContext, Recipe recipe) {
+
+    public StepsAdapter(Context mContext, Recipe recipe, StepItemClickListener listener) {
         this.mContext = mContext;
         this.recipe = recipe;
+        mOnClickListener = listener;
     }
 
     /**
      * The interface that receives onClick messages.
      */
-    public interface ListItemClickListener {
-        void onListItemClick(int clickedItemIndex);
+    public interface StepItemClickListener {
+        void onStepItemClick(int clickedItemIndex);
     }
 
     @NonNull
@@ -49,16 +53,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
     @Override
     public void onBindViewHolder(@NonNull StepsPlaceHolder holder, final int position) {
         holder.bind(position);
-
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Log.d(StepsAdapter.class.getSimpleName(), "position bind " + recipe.getStepsList().get(position).getShortDescription());
-
-
-            }
-        });
-
     }
 
     @Override
@@ -96,9 +90,24 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
             super(itemView);
 
             stepsTextView = (TextView) itemView.findViewById(R.id.text_view_list);
+            itemView.setOnClickListener(this);
         }
 
-        public void bind(int position){
+        public void bind(final int position){
+
+//            stepsTextView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d(StepsAdapter.class.getSimpleName(), "position bind " + recipe.getStepsList().get(position).getShortDescription());
+//
+//                    Intent intent = new Intent(v.getContext(), StepsActivity.class);
+//                    intent.putExtra("recipeID",recipe.getId());
+//                    intent.putExtra("stepID", recipe.getStepsList().get(position).getId());
+//
+//
+//                }
+//            });
+
             stepsTextView.setText(recipe.getStepsList().get(position).getShortDescription());
         }
 
@@ -110,6 +119,7 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
         public void onClick(View v) {
             int clickedPosition = getAdapterPosition();
             Log.d(IngredientsAdapter.class.getSimpleName(), "Adapter position clicked "+clickedPosition);
+            mOnClickListener.onStepItemClick(clickedPosition);
         }
     }
 }

@@ -1,6 +1,5 @@
 package com.example.bakingapp.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,26 +21,9 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
     private static final String TAG = StepsFragment.class.getSimpleName();
 
     private Recipe recipe;
-//    OnStepSelected mCallback;
-
 
     public StepsFragment(){
     }
-
-//    public interface OnStepSelected {
-//        public void onStepsClicked(int recipeID, int stepID);
-//    }
-
-//    @Override
-//    public void onAttach(@NonNull Context context) {
-//        super.onAttach(context);
-//
-//        try{
-//           mCallback = (OnStepSelected) context;
-//        }catch (ClassCastException e){
-//            throw new ClassCastException("onSelectedImage not implemented");
-//        }
-//    }
 
     @Nullable
     @Override
@@ -56,13 +38,6 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
         StepsAdapter adapter = new StepsAdapter(getContext(), getRecipe(), this);
         recyclerView.setAdapter(adapter);
-
-
-//        recyclerView.setOnClickListener(new RecyclerView.OnClickListener(){
-//            @Override
-//            public void onClick(View view) {
-//            }
-//        });
 
         return rootView;
     }

@@ -1,7 +1,6 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -60,28 +59,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
         return recipe.getStepsList().size();
     }
 
-
-//    @Override
-//    public View getView(int position, View convertView, ViewGroup viewGroup) {
-//
-//        TextView textView;
-//        if(convertView == null){
-//            // If the view is not recycled, this creates a new TextView
-//            textView = new TextView(mContext);
-//            textView.setPadding(8, 8, 8, 8);
-//        } else{
-//            textView = (TextView) convertView;
-//        }
-//
-//        Steps steps = recipe.getStepsList().get(position);
-//        String shortDescription = String.valueOf(steps.getShortDescription());
-//
-//        // set the recipe name to the textview
-//        textView.setText(shortDescription);
-//
-//        return textView;
-//    }
-
     public class StepsPlaceHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         TextView stepsTextView;
@@ -94,19 +71,6 @@ public class StepsAdapter extends RecyclerView.Adapter<StepsAdapter.StepsPlaceHo
         }
 
         public void bind(final int position){
-
-//            stepsTextView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Log.d(StepsAdapter.class.getSimpleName(), "position bind " + recipe.getStepsList().get(position).getShortDescription());
-//
-//                    Intent intent = new Intent(v.getContext(), StepsActivity.class);
-//                    intent.putExtra("recipeID",recipe.getId());
-//                    intent.putExtra("stepID", recipe.getStepsList().get(position).getId());
-//
-//
-//                }
-//            });
 
             stepsTextView.setText(recipe.getStepsList().get(position).getShortDescription());
         }

@@ -59,7 +59,7 @@ public class RecipeWidget extends AppWidgetProvider {
             // of the collection view.
             //rv.setEmptyView(R.id.widget_gridview, R.id.empty_view);
 
-            // Here we setup the a pending intent template. Individuals items of a collection
+            // Here we setup a pending intent template. Individuals items of a collection
             // cannot setup their own pending intents, instead, the collection as a whole can
             // setup a pending intent template, and the individual items can set a fillInIntent
             // to create unique before on an item to item basis.

@@ -23,6 +23,7 @@ import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,8 +48,11 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         // In onCreate() you setup any connections / cursors to your data source. Heavy lifting,
         // for example downloading or creating content etc, should be deferred to onDataSetChanged()
         // or getViewAt(). Taking more than 20 seconds in this call will result in an ANR.
-        for (int i = 0; i < mCount; i++) {
-            mWidgetItems.add(new WidgetItem(i + "!"));
+
+        //get the data=
+
+        for (int i = 0; i < Recipe.getRecipeByID(mContext,1).getStepsList().size(); i++) {
+            mWidgetItems.add(new WidgetItem(Recipe.getRecipeByID(mContext,1).getStepsList().get(i).getShortDescription()));
         }
         // We sleep for 3 seconds here to show how the empty view appears in the interim.
         // The empty view is set in the StackWidgetProvider and should be a sibling of the
@@ -65,7 +69,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         mWidgetItems.clear();
     }
     public int getCount() {
-        return mCount;
+        return Recipe.getRecipeByID(mContext,1).getStepsList().size();
     }
     public RemoteViews getViewAt(int position) {
         // position will always range from 0 to getCount() - 1.
@@ -73,8 +77,8 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         // text based on the position.
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
 
-        //rv.setTextViewText(R.id.widget_item, mWidgetItems.get(position).text);
-        rv.setTextViewText(R.id.widget_item, "hello");
+        rv.setTextViewText(R.id.widget_item, mWidgetItems.get(position).text);
+        //rv.setTextViewText(R.id.widget_item, "hello");
         // Next, we set a fill-intent which will be used to fill-in the pending intent template
         // which is set on the collection view in StackWidgetProvider.
 //        Bundle extras = new Bundle();

@@ -39,6 +39,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
     private List<WidgetItem> mWidgetItems = new ArrayList<WidgetItem>();
     private Context mContext;
     private int mAppWidgetId;
+
     public StackRemoteViewsFactory(Context context, Intent intent) {
         mContext = context;
         mAppWidgetId = intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,
@@ -49,10 +50,14 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         // for example downloading or creating content etc, should be deferred to onDataSetChanged()
         // or getViewAt(). Taking more than 20 seconds in this call will result in an ANR.
 
-        //get the data=
-
-        for (int i = 0; i < Recipe.getRecipeByID(mContext,1).getStepsList().size(); i++) {
-            mWidgetItems.add(new WidgetItem(Recipe.getRecipeByID(mContext,1).getStepsList().get(i).getShortDescription()));
+        try {
+            for (int i = 0; i < Recipe.getRecipeByID(mContext, MainActivity.recipeSelected).getStepsList().size(); i++) {
+                mWidgetItems.add(new WidgetItem(Recipe.getRecipeByID(mContext, MainActivity.recipeSelected).getStepsList().get(i).getShortDescription()));
+            }
+        } catch (NullPointerException e){
+            for (int i = 0; i < Recipe.getRecipeByID(mContext, 1).getStepsList().size(); i++) {
+                mWidgetItems.add(new WidgetItem(Recipe.getRecipeByID(mContext, 1).getStepsList().get(i).getShortDescription()));
+            }
         }
         // We sleep for 3 seconds here to show how the empty view appears in the interim.
         // The empty view is set in the StackWidgetProvider and should be a sibling of the
@@ -69,7 +74,15 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         mWidgetItems.clear();
     }
     public int getCount() {
-        return Recipe.getRecipeByID(mContext,1).getStepsList().size();
+        int count = 1;
+
+        try {
+            count = Recipe.getRecipeByID(mContext,MainActivity.recipeSelected).getStepsList().size();
+        } catch (NullPointerException e) {
+            count = 1;
+        }
+
+        return count;
     }
     public RemoteViews getViewAt(int position) {
         // position will always range from 0 to getCount() - 1.

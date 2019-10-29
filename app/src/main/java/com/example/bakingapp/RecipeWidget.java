@@ -50,7 +50,7 @@ public class RecipeWidget extends AppWidgetProvider {
 
             rv.setRemoteAdapter(R.id.widget_gridview, intent);
 
-            rv.setEmptyView(R.id.widget_gridview, R.id.empty_view);
+            //rv.setEmptyView(R.id.widget_gridview, R.id.empty_view);
 
             //updateAppWidget(context, appWidgetManager, appWidgetId);
 

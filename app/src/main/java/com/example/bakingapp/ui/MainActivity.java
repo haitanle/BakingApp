@@ -11,7 +11,7 @@ import com.example.bakingapp.data.Recipe;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnImageClickListener {
 
-    private int RecipeId;
+    static public int recipeSelected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +31,8 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
         Log.d(MainActivity.class.getSimpleName(), "id pressed "+recipe.getId());
 
         Intent recipeDetailIntent = new Intent(this, RecipeDetailsActivity.class);
+
+        recipeSelected = position;
 
         recipeDetailIntent.putExtra("position", position);
 

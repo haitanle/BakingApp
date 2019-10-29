@@ -8,9 +8,9 @@
     <TextView xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/empty_view"
         android:layout_width="match_parent"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:gravity="center"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/colorPrimary"
         android:textStyle="bold"
         android:text="Baking Widget"
         android:textSize="20sp" />

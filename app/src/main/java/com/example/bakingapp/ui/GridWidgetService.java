@@ -19,16 +19,19 @@ package com.example.bakingapp.ui;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.RecipeWidget;
 import com.example.bakingapp.data.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GridWidgetService extends RemoteViewsService {
+
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new StackRemoteViewsFactory(this.getApplicationContext(), intent);
@@ -84,6 +87,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         return count;
     }
+
     public RemoteViews getViewAt(int position) {
         // position will always range from 0 to getCount() - 1.
         // We construct a remote views item based on our widget item xml file, and set the
@@ -91,14 +95,16 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         RemoteViews rv = new RemoteViews(mContext.getPackageName(), R.layout.widget_item);
 
         rv.setTextViewText(R.id.widget_item, mWidgetItems.get(position).text);
+
         //rv.setTextViewText(R.id.widget_item, "hello");
+
         // Next, we set a fill-intent which will be used to fill-in the pending intent template
         // which is set on the collection view in StackWidgetProvider.
-//        Bundle extras = new Bundle();
-//        extras.putInt(StackWidgetProvider.EXTRA_ITEM, position);
-//        Intent fillInIntent = new Intent();
-//        fillInIntent.putExtras(extras);
-//        rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
+        Bundle extras = new Bundle();
+        extras.putInt(RecipeWidget.EXTRA_ITEM, position);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
+        rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
         // You can do heaving lifting in here, synchronously. For example, if you need to
         // process an image, fetch something from the network, etc., it is ok to do it here,
         // synchronously. A loading view will show up in lieu of the actual contents in the
@@ -112,6 +118,8 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         // Return the remote views object.
         return rv;
     }
+
+
     public RemoteViews getLoadingView() {
         // You can create a custom loading view (for instance when getViewAt() is slow.) If you
         // return null here, you will get the default loading view.

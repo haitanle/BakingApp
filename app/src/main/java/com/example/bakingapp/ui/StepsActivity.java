@@ -28,13 +28,21 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
+import org.w3c.dom.Text;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
 public class StepsActivity extends AppCompatActivity {
 
     private static final String TAG = StepsActivity.class.getSimpleName();
 
     private SimpleExoPlayer mExoPlayer;
-    private SimpleExoPlayerView mPlayerView;
-    private TextView mDescriptionView;
+
+    @BindView(R.id.playerView) SimpleExoPlayerView mPlayerView;
+
+    @BindView(R.id.description_textView) TextView mDescriptionView;
+
     private Button mButtonNext;
     private Button mButtonPrevious;
     private static MediaSessionCompat mMediaSession;
@@ -49,7 +57,7 @@ public class StepsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        mPlayerView = (SimpleExoPlayerView) findViewById(R.id.playerView);
+        ButterKnife.bind(this);
 
         int recipeID = getIntent().getIntExtra("recipeID",-1);
         int stepID = getIntent().getIntExtra("stepID",-1);
@@ -61,7 +69,6 @@ public class StepsActivity extends AppCompatActivity {
         String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
         String description = recipe.getStepsList().get(currentStepID).getDescription();
 
-        mDescriptionView = (TextView) findViewById(R.id.description_textView);
         mDescriptionView.setText(description);
 
         initializeMediaSession();

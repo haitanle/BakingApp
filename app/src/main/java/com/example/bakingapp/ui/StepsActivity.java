@@ -40,11 +40,10 @@ public class StepsActivity extends AppCompatActivity {
     private SimpleExoPlayer mExoPlayer;
 
     @BindView(R.id.playerView) SimpleExoPlayerView mPlayerView;
-
     @BindView(R.id.description_textView) TextView mDescriptionView;
+    @BindView(R.id.buttonNext) Button mButtonNext;
+    @BindView(R.id.buttonPrevious) Button mButtonPrevious;
 
-    private Button mButtonNext;
-    private Button mButtonPrevious;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
 
@@ -54,7 +53,6 @@ public class StepsActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_player_view);
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         ButterKnife.bind(this);
@@ -63,7 +61,6 @@ public class StepsActivity extends AppCompatActivity {
         int stepID = getIntent().getIntExtra("stepID",-1);
 
         final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
-
         currentStepID = stepID;
 
         String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
@@ -72,10 +69,8 @@ public class StepsActivity extends AppCompatActivity {
         mDescriptionView.setText(description);
 
         initializeMediaSession();
-
         initializePlayer(Uri.parse(stepURL));
 
-        mButtonNext = (Button) findViewById(R.id.buttonNext);
         mButtonNext.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {
@@ -94,7 +89,6 @@ public class StepsActivity extends AppCompatActivity {
             }
         });
 
-        mButtonPrevious = (Button) findViewById(R.id.buttonPrevious);
         mButtonPrevious.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view) {

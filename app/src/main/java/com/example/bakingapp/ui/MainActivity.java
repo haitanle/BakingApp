@@ -16,10 +16,25 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
     static public int recipeSelected;
 
+    public static boolean isTablet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        if (findViewById(R.id.tablet_main_fragment) != null){
+            isTablet = true;
+        } else {
+            isTablet = false;
+        }
+
+        if (isTablet){
+            if (savedInstanceState == null){
+
+
+            }
+        }
     }
 
     @Override

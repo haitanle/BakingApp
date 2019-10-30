@@ -2,7 +2,6 @@ package com.example.bakingapp.ui;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,14 @@ public class RecipeFragment extends Fragment {
 
         final View rootView = inflater.inflate(R.layout.fragment_recipe, container, false);
 
-        GridView gridView = (GridView) rootView.findViewById(R.id.recipe_grid_view);
+        GridView gridView = null;
+
+        if (rootView.findViewById(R.id.recipe_grid_view_tablet) != null){
+            gridView = (GridView) rootView.findViewById(R.id.recipe_grid_view_tablet);
+            gridView.setNumColumns(2);
+        } else {
+            gridView = (GridView) rootView.findViewById(R.id.recipe_grid_view);
+        }
 
         RecipeListAdapter mAdapter = new RecipeListAdapter(getContext(), Recipe.getAllRecipeIDs(getContext()));
 

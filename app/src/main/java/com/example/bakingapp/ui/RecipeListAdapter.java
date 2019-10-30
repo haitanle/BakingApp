@@ -1,11 +1,11 @@
 package com.example.bakingapp.ui;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import com.example.bakingapp.data.Recipe;
 
 import java.util.List;
@@ -44,6 +44,10 @@ public class RecipeListAdapter extends BaseAdapter {
         if(view == null){
             // If the view is not recycled, this creates a new TextView
             textView = new TextView(mContext);
+            textView.setTextSize(30);
+            int color = Color.parseColor("#00BCD4");
+            textView.setBackgroundColor(color);
+            textView.setPadding(5,5,5,5);
         } else{
             textView = (TextView) view;
         }

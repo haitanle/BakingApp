@@ -5,13 +5,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/recipe_grid_view"
     android:layout_width="match_parent"
-    android:layout_height="0dp"
+    android:layout_height="match_parent"
     android:adjustViewBounds="true"
+    android:background="@color/colorPrimary"
     android:gravity="center_horizontal"
     android:horizontalSpacing="8dp"
     android:numColumns="1"
     android:stretchMode="columnWidth"
-    android:verticalSpacing="8dp"
+    android:verticalSpacing="12dp"
     tools:text="Test">
 
 </GridView>

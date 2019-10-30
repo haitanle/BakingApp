@@ -20,6 +20,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        if (MainActivity.isTablet){
+
+        }
+
         IngredientsFragment ingredientFragment = new IngredientsFragment();
         int position = getIntent().getIntExtra("position",-1);
 

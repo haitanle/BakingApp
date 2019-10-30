@@ -96,8 +96,6 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
 
         rv.setTextViewText(R.id.widget_item, mWidgetItems.get(position).text);
 
-        //rv.setTextViewText(R.id.widget_item, "hello");
-
         // Next, we set a fill-intent which will be used to fill-in the pending intent template
         // which is set on the collection view in StackWidgetProvider.
         Bundle extras = new Bundle();
@@ -105,10 +103,7 @@ class StackRemoteViewsFactory implements RemoteViewsService.RemoteViewsFactory {
         Intent fillInIntent = new Intent();
         fillInIntent.putExtras(extras);
         rv.setOnClickFillInIntent(R.id.widget_item, fillInIntent);
-        // You can do heaving lifting in here, synchronously. For example, if you need to
-        // process an image, fetch something from the network, etc., it is ok to do it here,
-        // synchronously. A loading view will show up in lieu of the actual contents in the
-        // interim.
+
         try {
             System.out.println("Loading view " + position);
             Thread.sleep(500);

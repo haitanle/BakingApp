@@ -3,4 +3,7 @@
     <string name="recipe_list_load_error">Failure to load JSON data</string>
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
+    <string name="intent_extra_position">position</string>
+    <string name="intent_extra_recipeID">recipeID</string>
+    <string name="intent_extra_stepID">stepID</string>
 </resources>

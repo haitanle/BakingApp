@@ -53,18 +53,18 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        if (MainActivity.isTablet){
+        if (MainActivity.isTablet && getIntent().hasExtra(getString(R.string.intent_extra_stepID))){
 
-            int recipeID = getIntent().getIntExtra("recipeID",-1);
-            //int stepID = getIntent().getIntExtra("stepID",-1);
+            int recipeID = getIntent().getIntExtra(getString(R.string.intent_extra_recipeID),-1);
+            int stepID = getIntent().getIntExtra(getString(R.string.intent_extra_stepID),-1);
 
             final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
 
-            //String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
-            String stepURL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdae8_-intro-cheesecake/-intro-cheesecake.mp4";
-            //String description = recipe.getStepsList().get(stepID).getDescription();
+            String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
+            //String stepURL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdae8_-intro-cheesecake/-intro-cheesecake.mp4";
+            String description = recipe.getStepsList().get(stepID).getDescription();
 
-            //mDescriptionView.setText(description);
+            mDescriptionView.setText(description);
 
             initializeMediaSession();
 
@@ -75,7 +75,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         }
 
         IngredientsFragment ingredientFragment = new IngredientsFragment();
-        int position = getIntent().getIntExtra("position",-1);
+        int position = getIntent().getIntExtra(getString(R.string.intent_extra_position),-1);
 
         Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
         ingredientFragment.setRecipe(recipe);
@@ -103,9 +103,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     }
 
     private void playVideo(String stepURL){
-
-        //String description = recipe.getStepsList().get(currentStepID).getDescription();
-        //mDescriptionView.setText(description);
 
         initializePlayer(Uri.parse(stepURL));
 
@@ -152,9 +149,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
 
-            // Set the ExoPlayer.EventListener to this activity.
-            //mExoPlayer.addListener(this);
-
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(this, "BakingApp");
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
@@ -180,6 +174,22 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         public void onSkipToPrevious() {
             mExoPlayer.seekTo(0);
         }
+    }
+
+
+    /**
+     * Release ExoPlayer.
+     */
+    private void releasePlayer() {
+        mExoPlayer.stop();
+        mExoPlayer.release();
+        mExoPlayer = null;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        releasePlayer();
     }
 
 }

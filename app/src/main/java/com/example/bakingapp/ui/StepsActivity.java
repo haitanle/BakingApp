@@ -28,8 +28,6 @@ import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 
-import org.w3c.dom.Text;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
@@ -57,8 +55,8 @@ public class StepsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        int recipeID = getIntent().getIntExtra("recipeID",-1);
-        int stepID = getIntent().getIntExtra("stepID",-1);
+        int recipeID = getIntent().getIntExtra(getString(R.string.intent_extra_recipeID),-1);
+        int stepID = getIntent().getIntExtra(getString(R.string.intent_extra_stepID),-1);
 
         final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
         currentStepID = stepID;

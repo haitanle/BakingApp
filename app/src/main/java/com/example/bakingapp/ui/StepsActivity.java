@@ -135,13 +135,11 @@ public class StepsActivity extends AppCompatActivity {
 
         mMediaSession.setPlaybackState(mStateBuilder.build());
 
-
         // MySessionCallback has methods that handle callbacks from a media controller.
         mMediaSession.setCallback(new MySessionCallback());
 
         // Start the Media Session since the activity is active.
         mMediaSession.setActive(true);
-
     }
 
     /**
@@ -155,9 +153,6 @@ public class StepsActivity extends AppCompatActivity {
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(this, trackSelector, loadControl);
             mPlayerView.setPlayer(mExoPlayer);
-
-            // Set the ExoPlayer.EventListener to this activity.
-            //mExoPlayer.addListener(this);
 
             // Prepare the MediaSource.
             String userAgent = Util.getUserAgent(this, "BakingApp");

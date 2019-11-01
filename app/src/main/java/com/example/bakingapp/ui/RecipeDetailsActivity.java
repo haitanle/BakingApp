@@ -31,6 +31,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 public class RecipeDetailsActivity extends AppCompatActivity {
 
@@ -66,8 +67,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
 
             String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
+            String thumbnailURL = recipe.getStepsList().get(stepID).getThumbnail();
+
             if (stepURL.equals("")) {
-                showNoVideo();
+                showThumbNail(thumbnailURL);
             }
             String description = recipe.getStepsList().get(stepID).getDescription();
 
@@ -96,9 +99,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
     }
 
-    private void showNoVideo(){
+    private void showThumbNail(String thumbNailURL){
         mPlayerView.setVisibility(View.GONE);
         mNoVideoImage.setVisibility(View.VISIBLE);
+        if (!thumbNailURL.equals("")){
+            Picasso.get().load(thumbNailURL).into(mNoVideoImage);
+        }
     }
 
     @Override

@@ -7,7 +7,9 @@ import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,6 +37,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     private SimpleExoPlayer mExoPlayer;
     private SimpleExoPlayerView mPlayerView;
     private TextView mDescriptionView;
+    private ImageView mNoVideoImage;
     private Button mButtonNext;
     private Button mButtonPrevious;
 
@@ -55,20 +58,23 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
         if (MainActivity.isTablet && getIntent().hasExtra(getString(R.string.intent_extra_stepID))){
 
+            mNoVideoImage = (ImageView) findViewById(R.id.noVideoView);
+
             int recipeID = getIntent().getIntExtra(getString(R.string.intent_extra_recipeID),-1);
             int stepID = getIntent().getIntExtra(getString(R.string.intent_extra_stepID),-1);
 
             final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
 
             String stepURL = recipe.getStepsList().get(stepID).getVideoUrl();
-            //String stepURL = "https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffdae8_-intro-cheesecake/-intro-cheesecake.mp4";
+            if (stepURL.equals("")) {
+                showNoVideo();
+            }
             String description = recipe.getStepsList().get(stepID).getDescription();
 
             mDescriptionView.setText(description);
 
             initializeMediaSession();
 
-            //String stepURL = Recipe.getAllRecipeIDs(this).get(1).getStepsList().get(1).getVideoUrl();
             Log.d(TAG, "Play urlVideo: "+stepURL);
             playVideo(stepURL);
 
@@ -78,6 +84,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         int position = getIntent().getIntExtra(getString(R.string.intent_extra_position),-1);
 
         Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
+        //todo: setting the recipe is not working, adapter gets null, when rotating the screen
         ingredientFragment.setRecipe(recipe);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -87,6 +94,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         stepsFragment.setRecipe(recipe);
         fragmentManager.beginTransaction().add(R.id.steps_description_container, stepsFragment).commit();
 
+    }
+
+    private void showNoVideo(){
+        mPlayerView.setVisibility(View.GONE);
+        mNoVideoImage.setVisibility(View.VISIBLE);
     }
 
     @Override

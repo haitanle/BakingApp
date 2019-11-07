@@ -3,13 +3,11 @@ package com.example.bakingapp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.RecipeWidget;
 import com.example.bakingapp.data.Recipe;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnImageClickListener {
@@ -31,7 +29,6 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         if (isTablet){
             if (savedInstanceState == null){
-
 
             }
         }
@@ -56,8 +53,8 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidget.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_gridview);
+        //int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidget.class));
+        //appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_gridview);
 
         recipeDetailIntent.putExtra("position", position);
 

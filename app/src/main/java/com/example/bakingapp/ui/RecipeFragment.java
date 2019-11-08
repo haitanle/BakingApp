@@ -68,9 +68,7 @@ public class RecipeFragment extends Fragment {
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Log.d(RecipeFragment.class.getSimpleName(), "position clicked "+position);
                 int indexID = view.getId();
-                //Log.d(RecipeFragment.class.getSimpleName(), "id pressed "+indexID);
                 mCallback.onImageSelected(position);
             }
         });

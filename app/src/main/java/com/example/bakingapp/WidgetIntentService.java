@@ -16,9 +16,7 @@ public class WidgetIntentService extends IntentService {
     public static final String ACTION_UPDATE_INGREDIENTS = "com.example.bakingApp.action.update_ingredients";
 
     /**
-     * Creates an IntentService.  Invoked by your subclass's constructor.
-     *
-     * @param name Used to name the worker thread, important only for debugging.
+     * Creates an IntentService.  Invoked by your subclass's constructor
      */
     public WidgetIntentService() {
         super("WidgetIntentService");
@@ -38,6 +36,8 @@ public class WidgetIntentService extends IntentService {
         // pass recipe data to RecipeWidgetProvider
         AppWidgetManager widgetManager = AppWidgetManager.getInstance(this);
         int[] appWidgetIds = widgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
+
+        widgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_gridview);
 
         // pass data to RecipeWidgeProvider
         RecipeWidgetProvider.updateRecipeWidgets(this, widgetManager, appWidgetIds);

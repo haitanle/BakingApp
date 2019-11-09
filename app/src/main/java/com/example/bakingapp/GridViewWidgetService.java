@@ -56,11 +56,11 @@ class GridRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     public RemoteViews getViewAt(int position) {
         if (this.ingredientsList == null || this.ingredientsList.size() == 0) return null;
 
-        RemoteViews remoteViews = new RemoteViews(this.mContext.getPackageName(), R.layout.ingredient_list_widget);
-
         String ingredient = this.ingredientsList.get(position).getIngredients();
         String measure = this.ingredientsList.get(position).getMeasure();
         double quantity = this.ingredientsList.get(position).getQuantity();
+
+        RemoteViews remoteViews = new RemoteViews(this.mContext.getPackageName(), R.layout.ingredient_list_widget);
 
         String ingredient_text = String.format("%.2f %s %s", quantity, measure, ingredient);
         remoteViews.setTextViewText(R.id.ingredient_textView, ingredient_text);

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.RecipeWidgetProvider;
+import com.example.bakingapp.WidgetIntentService;
 import com.example.bakingapp.data.Recipe;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnImageClickListener {
@@ -20,6 +22,8 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        recipeSelected = 0;
 
         if (findViewById(R.id.tablet_main_fragment) != null){
             isTablet = true;
@@ -47,7 +51,8 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         Intent recipeDetailIntent = new Intent(this, RecipeDetailsActivity.class);
 
-        recipeSelected = position;
+        recipeSelected = position+1;
+        WidgetIntentService.startActionUpdateIngredients(this);
 
         //AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged();
 

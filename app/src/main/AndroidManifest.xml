@@ -12,8 +12,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <service android:name=".GridViewService"
+        <service android:name=".GridViewWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS"/>
+
+        <service android:name=".WidgetIntentService"/>
 
         <receiver android:name=".RecipeWidgetProvider">
             <intent-filter>

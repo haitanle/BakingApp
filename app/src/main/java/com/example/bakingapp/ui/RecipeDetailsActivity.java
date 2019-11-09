@@ -21,7 +21,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (MainActivity.isTablet){
-
         }
 
         IngredientsFragment ingredientFragment = new IngredientsFragment();
@@ -36,7 +35,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         StepsFragment stepsFragment = new StepsFragment();
         stepsFragment.setRecipe(recipe);
         fragmentManager.beginTransaction().add(R.id.steps_description_container, stepsFragment).commit();
-
     }
 
     @Override

@@ -8,11 +8,12 @@ import android.widget.RemoteViewsService;
 
 import com.example.bakingapp.data.Ingredients;
 import com.example.bakingapp.data.Recipe;
+import com.example.bakingapp.ui.MainActivity;
 import com.example.bakingapp.ui.RecipeDetailsActivity;
 
 import java.util.List;
 
-public class GridViewService extends RemoteViewsService {
+public class GridViewWidgetService extends RemoteViewsService {
     @Override
     public RemoteViewsFactory onGetViewFactory(Intent intent) {
         return new GridRemoteViewFactory(this.getApplicationContext());
@@ -35,7 +36,8 @@ class GridRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
     @Override
     public void onDataSetChanged(){
-        this.ingredientsList = Recipe.getRecipeByID(mContext, 1).getIngredientsList();
+        int recipeIndex = MainActivity.recipeSelected;
+        this.ingredientsList = Recipe.getRecipeByID(mContext, recipeIndex).getIngredientsList();
     }
 
     @Override
@@ -53,6 +55,7 @@ class GridRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
     @Override
     public RemoteViews getViewAt(int position) {
         if (this.ingredientsList == null || this.ingredientsList.size() == 0) return null;
+
         RemoteViews remoteViews = new RemoteViews(this.mContext.getPackageName(), R.layout.ingredient_list_widget);
 
         String ingredient = this.ingredientsList.get(position).getIngredients();
@@ -64,10 +67,9 @@ class GridRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
 
         // Pass the Ingredients ID as extra for Widget GridView
         Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
-        intent.putExtra("position", 1);
+        intent.putExtra("position", MainActivity.recipeSelected);
 
         remoteViews.setOnClickFillInIntent(R.id.recipe_name_text, intent);
-
 
         return remoteViews;
     }

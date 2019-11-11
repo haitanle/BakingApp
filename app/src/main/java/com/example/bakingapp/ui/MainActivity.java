@@ -3,13 +3,13 @@ package com.example.bakingapp.ui;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.appwidget.AppWidgetManager;
-import android.content.ComponentName;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.RecipeWidget;
+import com.example.bakingapp.RecipeWidgetProvider;
+import com.example.bakingapp.WidgetIntentService;
 import com.example.bakingapp.data.Recipe;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnImageClickListener {
@@ -23,6 +23,8 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        recipeSelected = 0;
+
         if (findViewById(R.id.tablet_main_fragment) != null){
             isTablet = true;
         } else {
@@ -31,7 +33,6 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         if (isTablet){
             if (savedInstanceState == null){
-
 
             }
         }
@@ -44,20 +45,14 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         recipeFragment.setmRceipeIds(Recipe.getAllRecipeIDs(this));
 
-        Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
+        Recipe recipe = Recipe.getRecipeByID(this, position);
 
         Log.d(MainActivity.class.getSimpleName(), "id pressed "+recipe.getId());
 
         Intent recipeDetailIntent = new Intent(this, RecipeDetailsActivity.class);
 
         recipeSelected = position;
-
-        //AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged();
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidget.class));
-        appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_gridview);
+        WidgetIntentService.startActionUpdateIngredients(this);
 
         recipeDetailIntent.putExtra("position", position);
 

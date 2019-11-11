@@ -1,0 +1,29 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="#09C"
+    android:padding="@dimen/widget_margin"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/recipe_name_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="8dp"
+        android:background="#09C"
+        android:text="@string/no_recipe"
+        android:textColor="#ffffff"
+        android:textSize="15sp"
+        android:textStyle="bold|italic"
+        tools:text="Peanut Butter Cake"/>
+
+    <GridView
+        android:id="@+id/widget_gridview"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:numColumns="1" />
+
+</LinearLayout>

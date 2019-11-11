@@ -47,6 +47,8 @@ public class StepsActivity extends AppCompatActivity {
     private PlaybackStateCompat.Builder mStateBuilder;
 
     private int currentStepID;
+    private Uri videoUri;
+    private long videoCurrentPosition;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -73,7 +75,9 @@ public class StepsActivity extends AppCompatActivity {
         if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
             currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
         }
-        initializePlayer(Uri.parse(stepURL), currentVideoPosition);
+
+        videoUri = Uri.parse(stepURL);
+        initializePlayer(videoUri, currentVideoPosition);
 
         mButtonNext.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -187,11 +191,28 @@ public class StepsActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onPause(){
+        super.onPause();
+        mExoPlayer.setPlayWhenReady(false);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mExoPlayer.setPlayWhenReady(false);
+    }
+
+    @Override
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        long videoCurrentPosition = mExoPlayer.getCurrentPosition();
-        outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
+        try {
+            long videoCurrentPosition = mExoPlayer.getCurrentPosition();
+            outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
+        } catch (NullPointerException e){
+            Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");
+                e.printStackTrace();
+        }
     }
 
     @Override

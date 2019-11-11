@@ -54,13 +54,6 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
         recipeSelected = position;
         WidgetIntentService.startActionUpdateIngredients(this);
 
-        //AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged();
-
-        AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
-
-        //int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidget.class));
-        //appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_gridview);
-
         recipeDetailIntent.putExtra("position", position);
 
         startActivity(recipeDetailIntent);

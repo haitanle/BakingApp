@@ -54,7 +54,15 @@ public class IngredientsAdapter extends RecyclerView.Adapter<IngredientsAdapter.
 
     @Override
     public int getItemCount() {
-        return recipe.getIngredientsList().size();
+        int itemCount = 0;
+        try {
+            itemCount = recipe.getIngredientsList().size();
+        } catch(NullPointerException e){
+            Log.d(IngredientsAdapter.class.getSimpleName(), "No Ingredients list in adapater");
+            e.printStackTrace();
+        }
+
+        return itemCount;
     }
 
 

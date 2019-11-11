@@ -7,4 +7,5 @@
     <string name="intent_extra_recipeID">recipeID</string>
     <string name="intent_extra_stepID">stepID</string>
     <string name="no_recipe">No Recipe Selected</string>
+    <string name="currentVideoPosition">videoCurrentPosition</string>
 </resources>

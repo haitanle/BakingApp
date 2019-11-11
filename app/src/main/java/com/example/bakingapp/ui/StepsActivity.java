@@ -4,6 +4,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -67,7 +68,12 @@ public class StepsActivity extends AppCompatActivity {
         mDescriptionView.setText(description);
 
         initializeMediaSession();
-        initializePlayer(Uri.parse(stepURL));
+
+        long currentVideoPosition = 0;
+        if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
+            currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
+        }
+        initializePlayer(Uri.parse(stepURL), currentVideoPosition);
 
         mButtonNext.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -146,7 +152,7 @@ public class StepsActivity extends AppCompatActivity {
      * Initialize ExoPlayer.
      * @param mediaUri The URI of the sample to play.
      */
-    private void initializePlayer(Uri mediaUri) {
+    private void initializePlayer(Uri mediaUri, long currentVideoPosition) {
         if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -159,6 +165,8 @@ public class StepsActivity extends AppCompatActivity {
             MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                     this, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
+
+            mExoPlayer.seekTo(currentVideoPosition);
             mExoPlayer.setPlayWhenReady(true);
         }
     }
@@ -176,6 +184,14 @@ public class StepsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         releasePlayer();
+    }
+
+    @Override
+    protected void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        long videoCurrentPosition = mExoPlayer.getCurrentPosition();
+        outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
     }
 
     @Override

@@ -49,6 +49,7 @@ public class StepsActivity extends AppCompatActivity {
     private int currentStepID;
     private Uri videoUri;
     private long videoCurrentPosition;
+    private boolean isPlayWhenReady;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,12 +73,14 @@ public class StepsActivity extends AppCompatActivity {
         initializeMediaSession();
 
         long currentVideoPosition = 0;
+        boolean isPlayWhenReady = true;
         if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
             currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
+            isPlayWhenReady = savedInstanceState.getBoolean("isPlayWhenReady");
         }
 
         videoUri = Uri.parse(stepURL);
-        initializePlayer(videoUri, currentVideoPosition);
+        initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
 
         mButtonNext.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -156,7 +159,7 @@ public class StepsActivity extends AppCompatActivity {
      * Initialize ExoPlayer.
      * @param mediaUri The URI of the sample to play.
      */
-    private void initializePlayer(Uri mediaUri, long currentVideoPosition) {
+    private void initializePlayer(Uri mediaUri, long currentVideoPosition, boolean isPlayWhenReady) {
         if (mExoPlayer == null) {
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
@@ -171,7 +174,7 @@ public class StepsActivity extends AppCompatActivity {
             mExoPlayer.prepare(mediaSource);
 
             mExoPlayer.seekTo(currentVideoPosition);
-            mExoPlayer.setPlayWhenReady(true);
+            mExoPlayer.setPlayWhenReady(isPlayWhenReady);
         }
     }
 
@@ -193,13 +196,16 @@ public class StepsActivity extends AppCompatActivity {
     @Override
     protected void onPause(){
         super.onPause();
+
+        //save the player state before pausing
+        isPlayWhenReady = mExoPlayer.getPlayWhenReady();
+
         mExoPlayer.setPlayWhenReady(false);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        mExoPlayer.setPlayWhenReady(false);
     }
 
     @Override
@@ -208,7 +214,10 @@ public class StepsActivity extends AppCompatActivity {
 
         try {
             long videoCurrentPosition = mExoPlayer.getCurrentPosition();
+
             outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
+            outState.putBoolean("isPlayWhenReady", isPlayWhenReady);
+            mExoPlayer.setPlayWhenReady(false);
         } catch (NullPointerException e){
             Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");
                 e.printStackTrace();

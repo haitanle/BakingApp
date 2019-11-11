@@ -69,7 +69,8 @@ class GridRemoteViewFactory implements RemoteViewsService.RemoteViewsFactory {
         Intent intent = new Intent(mContext, RecipeDetailsActivity.class);
         intent.putExtra("position", MainActivity.recipeSelected);
 
-        remoteViews.setOnClickFillInIntent(R.id.recipe_name_text, intent);
+        //TODO: On Click is not working for widget
+        remoteViews.setOnClickFillInIntent(R.id.ingredient_textView, intent);
 
         return remoteViews;
     }

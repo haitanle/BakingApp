@@ -53,7 +53,8 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
         // Intent to open the RecipeDetail Activity
         Intent detailIntent = new Intent(context, RecipeDetailsActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, detailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        remoteViews.setPendingIntentTemplate(R.id.ingredients_grid_view, pendingIntent);
+
+        remoteViews.setPendingIntentTemplate(R.id.widget_gridview, pendingIntent);
 
         return remoteViews;
     }

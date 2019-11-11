@@ -70,7 +70,7 @@ public class RecipeFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                mCallback.onImageSelected(position);
+                mCallback.onImageSelected(++position);
             }
         });
 

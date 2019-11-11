@@ -23,10 +23,10 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         if (MainActivity.isTablet){
         }
 
-        IngredientsFragment ingredientFragment = new IngredientsFragment();
         int position = getIntent().getIntExtra("position",-1);
+        Recipe recipe = Recipe.getRecipeByID(this, position);
 
-        Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
+        IngredientsFragment ingredientFragment = new IngredientsFragment();
         ingredientFragment.setRecipe(recipe);
 
         FragmentManager fragmentManager = getSupportFragmentManager();

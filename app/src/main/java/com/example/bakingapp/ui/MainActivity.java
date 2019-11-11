@@ -45,13 +45,13 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         recipeFragment.setmRceipeIds(Recipe.getAllRecipeIDs(this));
 
-        Recipe recipe = Recipe.getAllRecipeIDs(this).get(position);
+        Recipe recipe = Recipe.getRecipeByID(this, position);
 
         Log.d(MainActivity.class.getSimpleName(), "id pressed "+recipe.getId());
 
         Intent recipeDetailIntent = new Intent(this, RecipeDetailsActivity.class);
 
-        recipeSelected = position+1;
+        recipeSelected = position;
         WidgetIntentService.startActionUpdateIngredients(this);
 
         //AppWidgetManager.getInstance(this).notifyAppWidgetViewDataChanged();

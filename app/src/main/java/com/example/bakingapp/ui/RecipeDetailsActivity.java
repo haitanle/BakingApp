@@ -26,12 +26,12 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             Log.d(RecipeDetailsActivity.class.getSimpleName(), "This is tablet layout");
         }
 
-//        if (savedInstanceState == null){
-//
-//            ExoPlayerFragment exoFragment = new ExoPlayerFragment();
-//            exoFragment.setArguments(getIntent().getExtras());
-//            getSupportFragmentManager().beginTransaction().add(R.id.video_player, exoFragment).commit();
-//        }
+        if (savedInstanceState == null){
+
+            ExoPlayerFragment exoFragment = new ExoPlayerFragment();
+            exoFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager().beginTransaction().add(R.id.video_player, exoFragment).commit();
+        }
 
         int position = getIntent().getIntExtra("position",-1);
         Recipe recipe = Recipe.getRecipeByID(this, position);

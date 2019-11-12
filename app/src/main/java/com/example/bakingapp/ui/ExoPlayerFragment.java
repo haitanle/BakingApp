@@ -4,15 +4,19 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.example.bakingapp.R;
+import com.example.bakingapp.data.Recipe;
+import com.example.bakingapp.data.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -30,10 +34,14 @@ public class ExoPlayerFragment extends Fragment {
 
     private static final String TAG = ExoPlayerFragment.class.getSimpleName();
 
+    private TextView stepsTextView;
     private SimpleExoPlayer mExoPlayer;
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private SimpleExoPlayerView mPlayerView;
+
+    private boolean isPlayWhenReady;
+    private long currentVideoPosition;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,6 +49,13 @@ public class ExoPlayerFragment extends Fragment {
 
         initializeMediaSession();
         initializePlayer();
+
+        currentVideoPosition = 0;
+        isPlayWhenReady = true;
+        if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
+            currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
+            isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.isPlayWhenReady_key));
+        }
     }
 
     /**
@@ -71,18 +86,36 @@ public class ExoPlayerFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
 
+        stepsTextView = (TextView) view.findViewById(R.id.description_textView);
         mPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.playerView);
         mPlayerView.setPlayer(mExoPlayer);
     }
 
     @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        currentVideoPosition = 0;
+        isPlayWhenReady = true;
+    }
+
+    /**
+     * Once step is selected, set the video and step instruction
+     */
+    @Override
     public void onStart() {
         super.onStart();
-        MediaSource mediaSource = new ExtractorMediaSource(Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffddf0_-intro-yellow-cake/-intro-yellow-cake.mp4"), new DefaultDataSourceFactory(
+
+        Steps recipeStep= Recipe.getRecipeByID(getContext(), MainActivity.recipeSelected).getStepsList().get(getShownInsdex());
+
+        stepsTextView.setText(recipeStep.getDescription());
+        Uri videoURL = Uri.parse(recipeStep.getVideoUrl());
+
+        MediaSource mediaSource = new ExtractorMediaSource(videoURL, new DefaultDataSourceFactory(
                 getContext(), Util.getUserAgent(getContext(), "BakingApp")), new DefaultExtractorsFactory(), null, null);
 
         mExoPlayer.prepare(mediaSource);
-        mExoPlayer.setPlayWhenReady(true);
+        mExoPlayer.seekTo(currentVideoPosition);
+        mExoPlayer.setPlayWhenReady(isPlayWhenReady);
     }
 
     /**
@@ -121,7 +154,6 @@ public class ExoPlayerFragment extends Fragment {
 
     /**
      * Initialize ExoPlayer.
-     * @param mediaUri The URI of the sample to play.
      */
     private void initializePlayer() {
         if (mExoPlayer == null) {
@@ -165,7 +197,8 @@ public class ExoPlayerFragment extends Fragment {
         super.onPause();
 
         //save the player state before pausing
-        //isPlayWhenReady = mExoPlayer.getPlayWhenReady();
+        currentVideoPosition = mExoPlayer.getCurrentPosition();
+        isPlayWhenReady = mExoPlayer.getPlayWhenReady();
 
         mExoPlayer.setPlayWhenReady(false);
     }
@@ -193,6 +226,22 @@ public class ExoPlayerFragment extends Fragment {
         @Override
         public void onSkipToPrevious() {
             mExoPlayer.seekTo(0);
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        try {
+            long videoCurrentPosition = mExoPlayer.getCurrentPosition();
+
+            outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
+            outState.putBoolean(getString(R.string.isPlayWhenReady_key), isPlayWhenReady);
+
+        } catch (NullPointerException e){
+            Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");
+            e.printStackTrace();
         }
     }
 }

@@ -80,7 +80,7 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
             ExoPlayerFragment exoPlayerFragment = (ExoPlayerFragment) getFragmentManager().findFragmentById(R.id.video_player);
 
-            /* Determine if exoPlayerFragment is already created or not*/
+            /*Determine if exoPlayerFragment is already created or not*/
             if (exoPlayerFragment == null){
 
                 exoPlayerFragment = ExoPlayerFragment.newInstance(clickedItemIndex);
@@ -97,8 +97,12 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
                 args.putInt("index", clickedItemIndex);
                 exoPlayerFragment.setArguments(args);
-                exoPlayerFragment.onStart();
+                Bundle bundle = new Bundle();
 
+                exoPlayerFragment.onActivityCreated(bundle);
+
+            }else{
+                exoPlayerFragment.onStart();
             }
         } else {
 

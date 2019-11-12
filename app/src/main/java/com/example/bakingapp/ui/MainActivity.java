@@ -9,7 +9,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.example.bakingapp.R;
-import com.example.bakingapp.RecipeWidget;
+import com.example.bakingapp.RecipeWidgetProvider;
 import com.example.bakingapp.data.Recipe;
 
 public class MainActivity extends AppCompatActivity implements RecipeFragment.OnImageClickListener {
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements RecipeFragment.On
 
         AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(this);
 
-        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidget.class));
+        int appWidgetIds[] = appWidgetManager.getAppWidgetIds(new ComponentName(this, RecipeWidgetProvider.class));
         appWidgetManager.notifyAppWidgetViewDataChanged(appWidgetIds, R.id.widget_gridview);
 
         recipeDetailIntent.putExtra("position", position);

@@ -76,7 +76,7 @@ public class StepsActivity extends AppCompatActivity {
         boolean isPlayWhenReady = true;
         if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
             currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
-            isPlayWhenReady = savedInstanceState.getBoolean("isPlayWhenReady");
+            isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.isPlayWhenReady_key));
         }
 
         videoUri = Uri.parse(stepURL);
@@ -216,7 +216,7 @@ public class StepsActivity extends AppCompatActivity {
             long videoCurrentPosition = mExoPlayer.getCurrentPosition();
 
             outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
-            outState.putBoolean("isPlayWhenReady", isPlayWhenReady);
+            outState.putBoolean(getString(R.string.isPlayWhenReady_key), isPlayWhenReady);
             mExoPlayer.setPlayWhenReady(false);
         } catch (NullPointerException e){
             Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");

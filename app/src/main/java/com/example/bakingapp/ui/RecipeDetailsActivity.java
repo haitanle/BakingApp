@@ -1,6 +1,7 @@
 package com.example.bakingapp.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         if (MainActivity.isTablet){
+            Log.d(RecipeDetailsActivity.class.getSimpleName(), "This is tablet layout");
         }
 
         int position = getIntent().getIntExtra("position",-1);

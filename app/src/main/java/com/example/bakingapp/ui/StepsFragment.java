@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,8 +21,8 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
     private static final String TAG = StepsFragment.class.getSimpleName();
 
+    private boolean dualPane;
     private Recipe recipe;
-
     private int currentStepID;
 
     public StepsFragment(){
@@ -32,9 +33,6 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         final View rootView = inflater.inflate(R.layout.activity_steps_recycler_view, container, false);
-
-        //final View layoutView = inflater.inflate(R.layout.activity_ingredients, container, false);
-
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.steps_rv);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
@@ -42,6 +40,9 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
         StepsAdapter adapter = new StepsAdapter(getContext(), getRecipe(), this);
         recyclerView.setAdapter(adapter);
+
+        View exoPlayerFrame = getActivity().findViewById(R.id.video_player);
+        dualPane = exoPlayerFrame != null && exoPlayerFrame.getVisibility() == View.VISIBLE;
 
         return rootView;
     }
@@ -54,22 +55,57 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
         this.recipe = recipe;
     }
 
+    /*
+     * Handles click position from the step list
+     */
     @Override
     public void onStepItemClick(int clickedItemIndex){
 
-        if (!MainActivity.isTablet){
-            Log.d(TAG, "Fragment step clicked: "+clickedItemIndex);
+        Log.d(TAG, "ingredient step clicked: "+clickedItemIndex);
+
+        showPlayer(clickedItemIndex);
+
+//            Intent layoutIntent = new Intent(getContext(), RecipeDetailsActivity.class);
+//            String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
+//            layoutIntent.putExtra(getString(R.string.intent_extra_recipeID),recipe.getId());
+//            layoutIntent.putExtra(getString(R.string.intent_extra_position), MainActivity.recipeSelected);
+//            layoutIntent.putExtra(getString(R.string.intent_extra_stepID), recipe.getStepsList().get(clickedItemIndex).getId());
+//            startActivity(layoutIntent);
+
+    }
+
+    void showPlayer(int clickedItemIndex){
+
+        if (dualPane){
+
+            ExoPlayerFragment exoPlayerFragment = (ExoPlayerFragment) getFragmentManager().findFragmentById(R.id.video_player);
+
+            /* Determine if exoPlayerFragment is already created or not*/
+            if (exoPlayerFragment == null){
+
+                exoPlayerFragment = ExoPlayerFragment.newInstance(clickedItemIndex);
+
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.replace(R.id.video_player, exoPlayerFragment);
+
+                ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+                ft.commit();
+
+            } else if (exoPlayerFragment.getShownInsdex() != clickedItemIndex){
+
+                Bundle args = new Bundle();
+
+                args.putInt("index", clickedItemIndex);
+                exoPlayerFragment.setArguments(args);
+                exoPlayerFragment.onStart();
+
+            }
+        } else {
+
             Intent intent = new Intent(getContext(), StepsActivity.class);
             intent.putExtra(getString(R.string.intent_extra_recipeID),recipe.getId());
             intent.putExtra(getString(R.string.intent_extra_stepID), recipe.getStepsList().get(clickedItemIndex).getId());
             startActivity(intent);
-        }else{
-            Intent layoutIntent = new Intent(getContext(), RecipeDetailsActivity.class);
-            String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
-            layoutIntent.putExtra(getString(R.string.intent_extra_recipeID),recipe.getId());
-            layoutIntent.putExtra(getString(R.string.intent_extra_position), MainActivity.recipeSelected);
-            layoutIntent.putExtra(getString(R.string.intent_extra_stepID), recipe.getStepsList().get(clickedItemIndex).getId());
-            startActivity(layoutIntent);
         }
     }
 }

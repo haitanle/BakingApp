@@ -50,12 +50,3 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         return onOptionsItemSelected(item);
     }
 }
-
-
-//todo: widget not populating for small screen
-//todo: placeholder for not videoURL using picasso
-//todo: startup failure when launch
-//todo: widget onclick not working for tablet
-//done: double click necessary for landscape view
-//done: step recipe not getting passed on set in RecipeDetailsActivity
-//done: saving video for tablet

@@ -64,9 +64,7 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
     public void onStepItemClick(int clickedItemIndex){
 
         Log.d(TAG, "ingredient step clicked: "+clickedItemIndex);
-
         showPlayer(clickedItemIndex);
-
     }
 
     void showPlayer(int clickedItemIndex){

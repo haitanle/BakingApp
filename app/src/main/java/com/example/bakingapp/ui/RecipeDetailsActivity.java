@@ -17,15 +17,9 @@ public class RecipeDetailsActivity extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_ingredients);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        if (MainActivity.isTablet){
-            Log.d(RecipeDetailsActivity.class.getSimpleName(), "This is tablet layout");
-        }
-
 
         int position = getIntent().getIntExtra("position",-1);
         Recipe recipe = Recipe.getRecipeByID(this, position);
@@ -59,6 +53,7 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
 
 //todo: widget not populating for small screen
+//todo: placeholder for not videoURL
 //done: double click necessary for landscape view
 //done: step recipe not getting passed on set in RecipeDetailsActivity
 //done: saving video for tablet

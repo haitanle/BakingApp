@@ -49,13 +49,6 @@ public class ExoPlayerFragment extends Fragment {
 
         initializeMediaSession();
         initializePlayer();
-
-        currentVideoPosition = 0;
-        isPlayWhenReady = true;
-        if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
-            currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
-            isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.isPlayWhenReady_key));
-        }
     }
 
     /**
@@ -99,6 +92,11 @@ public class ExoPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         currentVideoPosition = 0;
         isPlayWhenReady = true;
+
+        if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
+            currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
+            isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.isPlayWhenReady_key));
+        }
         onStart();
     }
 
@@ -162,22 +160,10 @@ public class ExoPlayerFragment extends Fragment {
     private void initializePlayer() {
         if (mExoPlayer == null) {
 
-            //mPlayerView = new SimpleExoPlayerView(getActivity());
-
             // Create an instance of the ExoPlayer.
             TrackSelector trackSelector = new DefaultTrackSelector();
             LoadControl loadControl = new DefaultLoadControl();
             mExoPlayer = ExoPlayerFactory.newSimpleInstance(getContext(), trackSelector, loadControl);
-            //mPlayerView.setPlayer(mExoPlayer);
-
-            // Prepare the MediaSource.
-//            String userAgent = Util.getUserAgent(getContext(), "BakingApp");
-//            MediaSource mediaSource = new ExtractorMediaSource(Uri.parse("https://d17h27t6h515a5.cloudfront.net/topher/2017/April/58ffddf0_-intro-yellow-cake/-intro-yellow-cake.mp4"), new DefaultDataSourceFactory(
-//                    getContext(), userAgent), new DefaultExtractorsFactory(), null, null);
-//            mExoPlayer.prepare(mediaSource);
-//
-//            mExoPlayer.seekTo(0);
-//            mExoPlayer.setPlayWhenReady(true);
         }
     }
 

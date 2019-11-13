@@ -60,4 +60,5 @@ public class RecipeDetailsActivity extends AppCompatActivity {
 
 //todo: widget not populating for small screen
 //done: double click necessary for landscape view
-//todo: step recipe not getting passed on set in RecipeDetailsActivity
+//done: step recipe not getting passed on set in RecipeDetailsActivity
+//done: saving video for tablet

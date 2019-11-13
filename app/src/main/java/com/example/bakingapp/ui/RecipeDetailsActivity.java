@@ -26,12 +26,6 @@ public class RecipeDetailsActivity extends AppCompatActivity {
             Log.d(RecipeDetailsActivity.class.getSimpleName(), "This is tablet layout");
         }
 
-        if (savedInstanceState == null){
-
-            ExoPlayerFragment exoFragment = new ExoPlayerFragment();
-            exoFragment.setArguments(getIntent().getExtras());
-            getSupportFragmentManager().beginTransaction().add(R.id.video_player, exoFragment).commit();
-        }
 
         int position = getIntent().getIntExtra("position",-1);
         Recipe recipe = Recipe.getRecipeByID(this, position);
@@ -43,7 +37,11 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         fragmentManager.beginTransaction().add(R.id.ingredients_container, ingredientFragment).commit();
 
         StepsFragment stepsFragment = new StepsFragment();
-        stepsFragment.setRecipe(recipe);
+
+        Bundle bundle = new Bundle();
+        bundle.putInt("position", position);
+        stepsFragment.setArguments(bundle);
+
         fragmentManager.beginTransaction().add(R.id.steps_description_container, stepsFragment).commit();
     }
 
@@ -58,3 +56,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         return onOptionsItemSelected(item);
     }
 }
+
+
+//todo: widget not populating for small screen
+//done: double click necessary for landscape view
+//todo: step recipe not getting passed on set in RecipeDetailsActivity

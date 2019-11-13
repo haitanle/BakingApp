@@ -23,7 +23,6 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
     private boolean dualPane;
     private Recipe recipe;
-    private int currentStepID;
 
     public StepsFragment(){
     }
@@ -34,6 +33,9 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
 
         final View rootView = inflater.inflate(R.layout.activity_steps_recycler_view, container, false);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.steps_rv);
+
+        int position = getArguments().getInt("position");
+        recipe = Recipe.getRecipeByID(getContext(), position);
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -64,13 +66,6 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
         Log.d(TAG, "ingredient step clicked: "+clickedItemIndex);
 
         showPlayer(clickedItemIndex);
-
-//            Intent layoutIntent = new Intent(getContext(), RecipeDetailsActivity.class);
-//            String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
-//            layoutIntent.putExtra(getString(R.string.intent_extra_recipeID),recipe.getId());
-//            layoutIntent.putExtra(getString(R.string.intent_extra_position), MainActivity.recipeSelected);
-//            layoutIntent.putExtra(getString(R.string.intent_extra_stepID), recipe.getStepsList().get(clickedItemIndex).getId());
-//            startActivity(layoutIntent);
 
     }
 
@@ -107,9 +102,15 @@ public class StepsFragment extends Fragment implements StepsAdapter.StepItemClic
         } else {
 
             Intent intent = new Intent(getContext(), StepsActivity.class);
+
             intent.putExtra(getString(R.string.intent_extra_recipeID),recipe.getId());
             intent.putExtra(getString(R.string.intent_extra_stepID), recipe.getStepsList().get(clickedItemIndex).getId());
             startActivity(intent);
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+        super.onSaveInstanceState(outState);
     }
 }

@@ -80,6 +80,9 @@ public class ExoPlayerFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View rootView =  inflater.inflate(R.layout.activity_player_view, container, false);
+        rootView.findViewById(R.id.buttonPrevious).setVisibility(View.GONE);
+        rootView.findViewById(R.id.buttonNext).setVisibility(View.GONE);
+
         return rootView;
     }
 
@@ -96,6 +99,7 @@ public class ExoPlayerFragment extends Fragment {
         super.onActivityCreated(savedInstanceState);
         currentVideoPosition = 0;
         isPlayWhenReady = true;
+        onStart();
     }
 
     /**

@@ -120,7 +120,7 @@ public class ExoPlayerFragment extends Fragment {
         if (videoURL.toString().equals("")){
             String thumbNailUrl = recipeStep.getThumbnail();
 
-            if (thumbNailUrl.equals("")){
+            if (thumbNailUrl.equals("") || videoURL.toString().contains(".mp4")){
 
                 mExoPlayer.setPlayWhenReady(false);
 
@@ -128,23 +128,19 @@ public class ExoPlayerFragment extends Fragment {
                         .load(R.drawable.no_video_thumbnail2)
                         .into(thumbNaiView);
 
-                mPlayerView.setVisibility(View.GONE);
-                thumbNaiView.setVisibility(View.VISIBLE);
             }else{
 
                 Picasso.get()
                         .load(thumbNailUrl)
                         .placeholder(R.color.colorPrimary)
                         .into(thumbNaiView);
-
-                thumbNaiView.setVisibility(View.GONE);
-                mPlayerView.setVisibility(View.VISIBLE);
             }
+
+            showThumbNail();
 
         }else {
 
-            thumbNaiView.setVisibility(View.GONE);
-            mPlayerView.setVisibility(View.VISIBLE);
+            showVideoPlayer();
 
             MediaSource mediaSource = new ExtractorMediaSource(videoURL, new DefaultDataSourceFactory(
                     getContext(), Util.getUserAgent(getContext(), "BakingApp")), new DefaultExtractorsFactory(), null, null);
@@ -153,6 +149,16 @@ public class ExoPlayerFragment extends Fragment {
             mExoPlayer.seekTo(currentVideoPosition);
             mExoPlayer.setPlayWhenReady(isPlayWhenReady);
         }
+    }
+
+    private void showThumbNail(){
+        mPlayerView.setVisibility(View.GONE);
+        thumbNaiView.setVisibility(View.VISIBLE);
+    }
+
+    private void showVideoPlayer(){
+        thumbNaiView.setVisibility(View.GONE);
+        mPlayerView.setVisibility(View.VISIBLE);
     }
 
     /**

@@ -1,5 +1,6 @@
 package com.example.bakingapp.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -44,7 +45,8 @@ public class RecipeDetailsActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         if (id==android.R.id.home) {
-            finish();
+            Intent myIntent = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(myIntent);
             return true;
         }
         return onOptionsItemSelected(item);

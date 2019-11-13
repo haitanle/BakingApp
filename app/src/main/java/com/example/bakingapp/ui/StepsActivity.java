@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.bakingapp.R;
 import com.example.bakingapp.data.Recipe;
+import com.example.bakingapp.data.Steps;
 import com.google.android.exoplayer2.DefaultLoadControl;
 import com.google.android.exoplayer2.ExoPlayerFactory;
 import com.google.android.exoplayer2.LoadControl;
@@ -28,6 +30,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -42,6 +45,7 @@ public class StepsActivity extends AppCompatActivity {
     @BindView(R.id.description_textView) TextView mDescriptionView;
     @BindView(R.id.buttonNext) Button mButtonNext;
     @BindView(R.id.buttonPrevious) Button mButtonPrevious;
+    @BindView(R.id.thumbNail_imageView) ImageView thumbNaiView;
 
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
@@ -96,6 +100,9 @@ public class StepsActivity extends AppCompatActivity {
 
                 MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                         view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                handleNoVideo(mediaUri);
+
                 mExoPlayer.prepare(mediaSource);
                 mExoPlayer.setPlayWhenReady(true);
             }
@@ -114,6 +121,9 @@ public class StepsActivity extends AppCompatActivity {
 
                 MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
                         view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                handleNoVideo(mediaUri);
+
                 mExoPlayer.prepare(mediaSource);
                 mExoPlayer.setPlayWhenReady(true);
             }
@@ -174,9 +184,53 @@ public class StepsActivity extends AppCompatActivity {
                     this, userAgent), new DefaultExtractorsFactory(), null, null);
             mExoPlayer.prepare(mediaSource);
 
+            handleNoVideo(mediaUri);
+
             mExoPlayer.seekTo(currentVideoPosition);
             mExoPlayer.setPlayWhenReady(isPlayWhenReady);
         }
+    }
+
+
+    private void handleNoVideo(Uri videoURL){
+
+        Steps recipeStep= Recipe.getRecipeByID(this, MainActivity.recipeSelected).getStepsList().get(currentStepID);
+
+        if (videoURL.toString().equals("")){
+            String thumbNailUrl = recipeStep.getThumbnail();
+
+            if (thumbNailUrl.equals("") || videoURL.toString().contains(".mp4")){
+
+                mExoPlayer.setPlayWhenReady(false);
+
+                Picasso.get()
+                        .load(R.drawable.no_video_thumbnail2)
+                        .into(thumbNaiView);
+
+            }else{
+
+                Picasso.get()
+                        .load(thumbNailUrl)
+                        .placeholder(R.color.colorPrimary)
+                        .into(thumbNaiView);
+            }
+
+            showThumbNail();
+
+        }else {
+
+            showVideoPlayer();
+        }
+    }
+
+    private void showThumbNail(){
+        mPlayerView.setVisibility(View.GONE);
+        thumbNaiView.setVisibility(View.VISIBLE);
+    }
+
+    private void showVideoPlayer(){
+        thumbNaiView.setVisibility(View.GONE);
+        mPlayerView.setVisibility(View.VISIBLE);
     }
 
     /**

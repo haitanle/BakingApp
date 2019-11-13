@@ -64,8 +64,20 @@ public class StepsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
+        long currentVideoPosition = 0;
+        int stepID = 0;
+        boolean isPlayWhenReady = true;
+
+        if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
+            currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
+            isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.isPlayWhenReady_key));
+
+            stepID = savedInstanceState.getInt("currentStepID");
+        }else{
+            stepID = getIntent().getIntExtra(getString(R.string.intent_extra_stepID),-1);
+        }
+
         int recipeID = getIntent().getIntExtra(getString(R.string.intent_extra_recipeID),-1);
-        int stepID = getIntent().getIntExtra(getString(R.string.intent_extra_stepID),-1);
 
         final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
         currentStepID = stepID;
@@ -77,12 +89,7 @@ public class StepsActivity extends AppCompatActivity {
 
         initializeMediaSession();
 
-        long currentVideoPosition = 0;
-        boolean isPlayWhenReady = true;
-        if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
-            currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
-            isPlayWhenReady = savedInstanceState.getBoolean(getString(R.string.isPlayWhenReady_key));
-        }
+
 
         videoUri = Uri.parse(stepURL);
         initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
@@ -272,6 +279,7 @@ public class StepsActivity extends AppCompatActivity {
 
             outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
             outState.putBoolean(getString(R.string.isPlayWhenReady_key), isPlayWhenReady);
+            outState.putInt("currentStepID", currentStepID);
             mExoPlayer.setPlayWhenReady(false);
         } catch (NullPointerException e){
             Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");

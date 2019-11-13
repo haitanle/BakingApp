@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -29,6 +30,7 @@ import com.google.android.exoplayer2.trackselection.TrackSelector;
 import com.google.android.exoplayer2.ui.SimpleExoPlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
+import com.squareup.picasso.Picasso;
 
 public class ExoPlayerFragment extends Fragment {
 
@@ -39,6 +41,7 @@ public class ExoPlayerFragment extends Fragment {
     private static MediaSessionCompat mMediaSession;
     private PlaybackStateCompat.Builder mStateBuilder;
     private SimpleExoPlayerView mPlayerView;
+    private ImageView thumbNaiView;
 
     private boolean isPlayWhenReady;
     private long currentVideoPosition;
@@ -85,6 +88,8 @@ public class ExoPlayerFragment extends Fragment {
         stepsTextView = (TextView) view.findViewById(R.id.description_textView);
         mPlayerView = (SimpleExoPlayerView) view.findViewById(R.id.playerView);
         mPlayerView.setPlayer(mExoPlayer);
+        thumbNaiView = (ImageView) view.findViewById(R.id.thumbNail_imageView);
+
     }
 
     @Override
@@ -112,12 +117,42 @@ public class ExoPlayerFragment extends Fragment {
         stepsTextView.setText(recipeStep.getDescription());
         Uri videoURL = Uri.parse(recipeStep.getVideoUrl());
 
-        MediaSource mediaSource = new ExtractorMediaSource(videoURL, new DefaultDataSourceFactory(
-                getContext(), Util.getUserAgent(getContext(), "BakingApp")), new DefaultExtractorsFactory(), null, null);
+        if (videoURL.toString().equals("")){
+            String thumbNailUrl = recipeStep.getThumbnail();
 
-        mExoPlayer.prepare(mediaSource);
-        mExoPlayer.seekTo(currentVideoPosition);
-        mExoPlayer.setPlayWhenReady(isPlayWhenReady);
+            if (thumbNailUrl.equals("")){
+
+                mExoPlayer.setPlayWhenReady(false);
+
+                Picasso.get()
+                        .load(R.drawable.no_video_thumbnail2)
+                        .into(thumbNaiView);
+
+                mPlayerView.setVisibility(View.GONE);
+                thumbNaiView.setVisibility(View.VISIBLE);
+            }else{
+
+                Picasso.get()
+                        .load(thumbNailUrl)
+                        .placeholder(R.color.colorPrimary)
+                        .into(thumbNaiView);
+
+                thumbNaiView.setVisibility(View.GONE);
+                mPlayerView.setVisibility(View.VISIBLE);
+            }
+
+        }else {
+
+            thumbNaiView.setVisibility(View.GONE);
+            mPlayerView.setVisibility(View.VISIBLE);
+
+            MediaSource mediaSource = new ExtractorMediaSource(videoURL, new DefaultDataSourceFactory(
+                    getContext(), Util.getUserAgent(getContext(), "BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+            mExoPlayer.prepare(mediaSource);
+            mExoPlayer.seekTo(currentVideoPosition);
+            mExoPlayer.setPlayWhenReady(isPlayWhenReady);
+        }
     }
 
     /**

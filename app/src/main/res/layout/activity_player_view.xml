@@ -25,6 +25,12 @@
         android:layout_height="0dp"
         android:layout_weight="4"/>
 
+    <ImageView
+        android:id="@+id/thumbNail_imageView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="4"/>
+
     <TextView
         android:id="@+id/description_textView"
         android:layout_width="match_parent"

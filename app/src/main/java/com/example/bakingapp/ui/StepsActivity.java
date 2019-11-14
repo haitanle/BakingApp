@@ -52,8 +52,9 @@ public class StepsActivity extends AppCompatActivity {
 
     private int currentStepID;
     private Uri videoUri;
-    private long videoCurrentPosition;
+    private long currentVideoPosition;
     private boolean isPlayWhenReady;
+    private Recipe recipe;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,9 +65,9 @@ public class StepsActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
 
-        long currentVideoPosition = 0;
+        currentVideoPosition = 0;
         int stepID = 0;
-        boolean isPlayWhenReady = true;
+        isPlayWhenReady = true;
 
         if (savedInstanceState != null && savedInstanceState.getLong(getString(R.string.currentVideoPosition)) != 0){
             currentVideoPosition = savedInstanceState.getLong(getString(R.string.currentVideoPosition));
@@ -79,7 +80,7 @@ public class StepsActivity extends AppCompatActivity {
 
         int recipeID = getIntent().getIntExtra(getString(R.string.intent_extra_recipeID),-1);
 
-        final Recipe recipe = Recipe.getRecipeByID(this,recipeID);
+        recipe = Recipe.getRecipeByID(this,recipeID);
         currentStepID = stepID;
 
         String stepURL = recipe.getStepsList().get(currentStepID).getVideoUrl();
@@ -92,52 +93,109 @@ public class StepsActivity extends AppCompatActivity {
 
 
         videoUri = Uri.parse(stepURL);
-        initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
-
-        mButtonNext.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                currentStepID++;
-                if (recipe.getStepsList().size() <= currentStepID){
-                    currentStepID = 0;
-                }
-                mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
-
-                Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
-
-                MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                        view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
-
-                handleNoVideo(mediaUri);
-
-                mExoPlayer.prepare(mediaSource);
-                mExoPlayer.setPlayWhenReady(true);
-            }
-        });
-
-        mButtonPrevious.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                currentStepID--;
-                if (currentStepID == -1){
-                    currentStepID = recipe.getStepsList().size()-1;
-                }
-                mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
-
-                Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
-
-                MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                        view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
-
-                handleNoVideo(mediaUri);
-
-                mExoPlayer.prepare(mediaSource);
-                mExoPlayer.setPlayWhenReady(true);
-            }
-        });
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        if (Util.SDK_INT > 23){
+
+            initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
+
+            mButtonNext.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    currentStepID++;
+                    if (recipe.getStepsList().size() <= currentStepID){
+                        currentStepID = 0;
+                    }
+                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                    handleNoVideo(mediaUri);
+
+                    mExoPlayer.prepare(mediaSource);
+                    mExoPlayer.setPlayWhenReady(true);
+                }
+            });
+
+            mButtonPrevious.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    currentStepID--;
+                    if (currentStepID == -1){
+                        currentStepID = recipe.getStepsList().size()-1;
+                    }
+                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                    handleNoVideo(mediaUri);
+
+                    mExoPlayer.prepare(mediaSource);
+                    mExoPlayer.setPlayWhenReady(true);
+                }
+            });
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (Util.SDK_INT <= 23 || mExoPlayer == null){
+            initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
+
+            mButtonNext.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    currentStepID++;
+                    if (recipe.getStepsList().size() <= currentStepID){
+                        currentStepID = 0;
+                    }
+                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                    handleNoVideo(mediaUri);
+
+                    mExoPlayer.prepare(mediaSource);
+                    mExoPlayer.setPlayWhenReady(true);
+                }
+            });
+
+            mButtonPrevious.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    currentStepID--;
+                    if (currentStepID == -1){
+                        currentStepID = recipe.getStepsList().size()-1;
+                    }
+                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                    handleNoVideo(mediaUri);
+
+                    mExoPlayer.prepare(mediaSource);
+                    mExoPlayer.setPlayWhenReady(true);
+                }
+            });
+        }
+    }
 
     /**
      * Initializes the Media Session to be enabled with media buttons, transport controls, callbacks
@@ -263,11 +321,6 @@ public class StepsActivity extends AppCompatActivity {
         isPlayWhenReady = mExoPlayer.getPlayWhenReady();
 
         mExoPlayer.setPlayWhenReady(false);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
     }
 
     @Override

@@ -90,8 +90,6 @@ public class StepsActivity extends AppCompatActivity {
 
         initializeMediaSession();
 
-
-
         videoUri = Uri.parse(stepURL);
 
     }
@@ -100,52 +98,7 @@ public class StepsActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         if (Util.SDK_INT > 23){
-
             initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
-
-            mButtonNext.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    currentStepID++;
-                    if (recipe.getStepsList().size() <= currentStepID){
-                        currentStepID = 0;
-                    }
-                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
-
-                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
-                    videoUri = mediaUri;
-
-                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
-
-                    handleNoVideo(mediaUri);
-
-                    mExoPlayer.prepare(mediaSource);
-                    mExoPlayer.setPlayWhenReady(true);
-                }
-            });
-
-            mButtonPrevious.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    currentStepID--;
-                    if (currentStepID == -1){
-                        currentStepID = recipe.getStepsList().size()-1;
-                    }
-                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
-
-                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
-                    videoUri = mediaUri;
-
-                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
-
-                    handleNoVideo(mediaUri);
-
-                    mExoPlayer.prepare(mediaSource);
-                    mExoPlayer.setPlayWhenReady(true);
-                }
-            });
         }
     }
 
@@ -154,50 +107,6 @@ public class StepsActivity extends AppCompatActivity {
         super.onResume();
         if (Util.SDK_INT <= 23 || mExoPlayer == null){
             initializePlayer(videoUri, currentVideoPosition, isPlayWhenReady);
-
-            mButtonNext.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    currentStepID++;
-                    if (recipe.getStepsList().size() <= currentStepID){
-                        currentStepID = 0;
-                    }
-                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
-
-                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
-                    videoUri = mediaUri;
-
-                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
-
-                    handleNoVideo(mediaUri);
-
-                    mExoPlayer.prepare(mediaSource);
-                    mExoPlayer.setPlayWhenReady(true);
-                }
-            });
-
-            mButtonPrevious.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view) {
-                    currentStepID--;
-                    if (currentStepID == -1){
-                        currentStepID = recipe.getStepsList().size()-1;
-                    }
-                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
-
-                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
-                    videoUri = mediaUri;
-
-                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
-                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
-
-                    handleNoVideo(mediaUri);
-
-                    mExoPlayer.prepare(mediaSource);
-                    mExoPlayer.setPlayWhenReady(true);
-                }
-            });
         }
     }
 
@@ -257,6 +166,50 @@ public class StepsActivity extends AppCompatActivity {
 
             mExoPlayer.seekTo(currentVideoPosition);
             mExoPlayer.setPlayWhenReady(isPlayWhenReady);
+
+            mButtonNext.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    currentStepID++;
+                    if (recipe.getStepsList().size() <= currentStepID){
+                        currentStepID = 0;
+                    }
+                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+                    videoUri = mediaUri;
+
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                    handleNoVideo(mediaUri);
+
+                    mExoPlayer.prepare(mediaSource);
+                    mExoPlayer.setPlayWhenReady(true);
+                }
+            });
+
+            mButtonPrevious.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    currentStepID--;
+                    if (currentStepID == -1){
+                        currentStepID = recipe.getStepsList().size()-1;
+                    }
+                    mDescriptionView.setText(recipe.getStepsList().get(currentStepID).getDescription());
+
+                    Uri mediaUri = Uri.parse(recipe.getStepsList().get(currentStepID).getVideoUrl());
+                    videoUri = mediaUri;
+
+                    MediaSource mediaSource = new ExtractorMediaSource(mediaUri, new DefaultDataSourceFactory(
+                            view.getContext(), Util.getUserAgent(view.getContext(),"BakingApp")), new DefaultExtractorsFactory(), null, null);
+
+                    handleNoVideo(mediaUri);
+
+                    mExoPlayer.prepare(mediaSource);
+                    mExoPlayer.setPlayWhenReady(true);
+                }
+            });
         }
     }
 
@@ -345,28 +298,15 @@ public class StepsActivity extends AppCompatActivity {
     protected void onSaveInstanceState(@NonNull Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        if (mExoPlayer == null){
-            try {
+        long videoCurrentPosition = (mExoPlayer==null)? currentVideoPosition: mExoPlayer.getCurrentPosition();
 
-                outState.putLong(getString(R.string.currentVideoPosition), currentVideoPosition);
-                outState.putBoolean(getString(R.string.isPlayWhenReady_key), isPlayWhenReady);
-                outState.putInt("currentStepID", currentStepID);
-            } catch (NullPointerException e){
-                Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");
-                    e.printStackTrace();
-            }
-        }else{
-            try {
-                long videoCurrentPosition = mExoPlayer.getCurrentPosition();
-
-                outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
-                outState.putBoolean(getString(R.string.isPlayWhenReady_key), isPlayWhenReady);
-                outState.putInt("currentStepID", currentStepID);
-                mExoPlayer.setPlayWhenReady(false);
-            } catch (NullPointerException e){
-                Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");
-                e.printStackTrace();
-            }
+        try {
+            outState.putLong(getString(R.string.currentVideoPosition), videoCurrentPosition);
+            outState.putBoolean(getString(R.string.isPlayWhenReady_key), isPlayWhenReady);
+            outState.putInt("currentStepID", currentStepID);
+        } catch (NullPointerException e){
+            Log.d(StepsActivity.class.getSimpleName(), "Unable to save videoPosition");
+            e.printStackTrace();
         }
 
     }

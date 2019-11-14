@@ -5,16 +5,20 @@ import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import com.example.bakingapp.data.Recipe;
 import com.example.bakingapp.ui.MainActivity;
 import com.example.bakingapp.ui.RecipeDetailsActivity;
+import com.google.android.exoplayer2.util.NalUnitUtil;
 
 /**
  * Implementation of App Widget functionality.
  */
 public class RecipeWidgetProvider extends AppWidgetProvider {
+
+    private static String TAG = RecipeWidgetProvider.class.getSimpleName();
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -42,21 +46,28 @@ public class RecipeWidgetProvider extends AppWidgetProvider {
     /* for widget's grid service */
     public static RemoteViews getWidgetGridview(Context context){
 
-        RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
-        String recipeName = Recipe.getRecipeByID(context, MainActivity.recipeSelected).getName();
-        remoteViews.setTextViewText(R.id.recipe_name_text, recipeName);
+        try {
+            RemoteViews remoteViews = new RemoteViews(context.getPackageName(), R.layout.recipe_widget_provider);
+            String recipeName = Recipe.getRecipeByID(context, MainActivity.recipeSelected).getName();
+            remoteViews.setTextViewText(R.id.recipe_name_text, recipeName);
 
-        // create the Intent to call the GridViewWidgetService for data
-        Intent intent = new Intent(context, GridViewWidgetService.class);
-        remoteViews.setRemoteAdapter(R.id.widget_gridview, intent);
+            // create the Intent to call the GridViewWidgetService for data
+            Intent intent = new Intent(context, GridViewWidgetService.class);
+            remoteViews.setRemoteAdapter(R.id.widget_gridview, intent);
 
-        // Intent to open the RecipeDetail Activity
-        Intent detailIntent = new Intent(context, RecipeDetailsActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, detailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            // Intent to open the RecipeDetail Activity
+            Intent detailIntent = new Intent(context, RecipeDetailsActivity.class);
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, detailIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        remoteViews.setPendingIntentTemplate(R.id.widget_gridview, pendingIntent);
+            remoteViews.setPendingIntentTemplate(R.id.widget_gridview, pendingIntent);
+            return remoteViews;
 
-        return remoteViews;
+        } catch (NullPointerException e){
+            Log.d(TAG, "Recipe not yet selected");
+            e.printStackTrace();
+        }
+
+        return null;
     }
 
     @Override
